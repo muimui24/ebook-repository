@@ -22,6 +22,7 @@ import AddEbook from "./addEbook";
 import Viewer from "./viewpdf";
 import ImgMediaCard from "./displayEbook";
 import { padding } from "@mui/system";
+import Login from "./authentication";
 
 const drawerWidth = 240;
 
@@ -156,9 +157,10 @@ function App() {
       <Box component="main" sx={{ flexGrow: 2, p: 2 }}>
         <DrawerHeader />
         {/* <FileUploader /> */}
-        <AddEbook />
+        {/* <AddEbook /> */}
         {/* <Viewer /> */}
         {/* <ImgMediaCard /> */}
+        <Login />
       </Box>
     </Box>
   );

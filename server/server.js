@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const multer = require("multer");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const mysql = require("mysql");
 const app = express();
 
@@ -12,13 +14,32 @@ const db = mysql.createPool({
   database: "ebook_repository",
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+app.use(cookieParser());
+
 app.use(express.json());
+app.use(
+  session({
+    key: "userId",
+    secret: "JLSA",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: 60 * 60 * 24,
+    },
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use("/static", express.static("public"));
 app.use("/files", express.static("public/files"));
-// -----------create---------------------
+// -----------create------------------------------------------
 app.post("/api/insert", (req, res) => {
   const ebookTitle = req.body.ebookTitle;
   const ebookAuthor = req.body.ebookAuthor;
@@ -36,7 +57,7 @@ app.post("/api/insert", (req, res) => {
     }
   );
 });
-// ---------------read--------------------
+// ---------------read------------------------------------------
 
 app.get("/api/read", (req, res) => {
   const sqlSelect = "SELECT * FROM ebooks";
@@ -45,7 +66,7 @@ app.get("/api/read", (req, res) => {
   });
 });
 
-// ---------------read--------------------
+// ---------------read-------------------------------
 app.delete("/api/delete/:bookId", (req, res) => {
   const bookId = req.params.bookId;
   const sqlDelete = "DELETE FROM ebooks WHERE id = ?";
@@ -53,7 +74,7 @@ app.delete("/api/delete/:bookId", (req, res) => {
     if (err) console.log(err);
   });
 });
-// ---------------update--------------------
+// ---------------update-------------------------------
 app.put("/api/update", (req, res) => {
   const updateId = req.body.ebookNewId;
   const updateTitle = req.body.ebookNewTitle;
@@ -71,6 +92,39 @@ app.put("/api/update", (req, res) => {
       else console.log(result);
     }
   );
+});
+
+// --------------LOGIN-----------------------------------
+app.post("/login", (req, res) => {
+  const userId = req.body.userId;
+  const password = req.body.password;
+
+  db.query(
+    "SELECT * FROM users WHERE user_id =? AND password =?",
+    [userId, password],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+
+      if (result.length > 0) {
+        req.session.user = result;
+        console.log(req.session.user);
+
+        res.send(result);
+      } else {
+        res.send({ message: "Incorrect password" });
+      }
+    }
+  );
+});
+// --------------get LOGIN session-----------------------------------
+app.get("/login", (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
+  }
 });
 // ------------------------------------------------------------
 

@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import "./App.css";
 
-function Viewer() {
+export default function Viewer(bookname) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-
+  var filename = bookname;
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);
@@ -31,7 +31,7 @@ function Viewer() {
           <button onClick={changePageNext}>next Page</button>
         )}
         <Document
-          file="//localhost:8000/Advances in Human Factors, Business Management, Training and Education_ Proceedings of the AHFE 2016 International Conference on Human Factors, Business Management and Society, July 27-31, 2016, Walt Disney World®, .pdf"
+          file={"//localhost:8000/" + filename}
           onLoadSuccess={onDocumentLoadSuccess}
         >
           <Page height="700" pageNumber={pageNumber} />
@@ -43,5 +43,3 @@ function Viewer() {
     </div>
   );
 }
-
-export default Viewer;
