@@ -13,6 +13,18 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Axios from "axios";
+import Thumbnail from "./displayEbook";
+import App from "./App";
+import { withRouter } from "react-router";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useNavigate,
+  useLocation,
+  Navigate,
+  Redirect,
+} from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -42,8 +54,18 @@ function Login() {
   //       password: data.get("password"),
   //     });
   //   };
+  const navigate = useNavigate();
+  function redirect() {
+    navigate("/");
+  }
+  const user = localStorage.getItem("user_id");
+  if (user !== undefined && user !== null) {
+    console.log(user);
+    console.log("is Login");
+    //todo: redirect to main
+  }
   function logout() {
-    localStorage.clear();
+    localStorage.removeItem("user_id");
   }
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -56,20 +78,26 @@ function Login() {
       userId: userId,
       password: password,
     }).then((response) => {
-      if (response.data.message) {
-        setStatus(response.data.message);
-        console.log(response);
+      if (response.status === 200) {
+        localStorage.setItem("user_id", response.data[0].user_id);
+        localStorage.setItem("isLogIn", true);
+        const userId = localStorage.getItem("user_id");
+        setStatus(userId !== undefined ? "Login" : "No User Login");
+        console.log(loginStatus);
+        const user = localStorage.getItem("user_id");
+        console.log(user);
+        redirect();
       } else {
-        console.log(response);
+        console.log(response.data.message);
       }
     });
   };
   useEffect(() => {
-    Axios.get("http://localhost:8000/login").then((response) => {
-      if (response.data.loggedIn == true) {
-        setStatus(response.data.user[0].id);
-      }
-    });
+    // Axios.get("http://localhost:8000/login").then((response) => {
+    //   if (response.data.loggedIn == true) {
+    //     console.log(response);
+    //     setStatus(response.data.user[0].id);
+    // });
   });
 
   return (
@@ -162,4 +190,5 @@ function Login() {
     </ThemeProvider>
   );
 }
+
 export default Login;

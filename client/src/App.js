@@ -14,7 +14,15 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+  Switch,
+  useNavigate,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import MenuList from "./layout/sidebar";
 import AccountMenu from "./layout/account";
 import { FileUploader } from "./components";
@@ -23,7 +31,11 @@ import Viewer from "./viewpdf";
 import ImgMediaCard from "./displayEbook";
 import { padding } from "@mui/system";
 import Login from "./authentication";
+import ProtectedRoutes from "./routesProtecting";
+import { Routes } from "react-router";
+import Users from "./users";
 
+import Thumbnail from "./displayEbook";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -102,67 +114,101 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  // let location = useLocation();
+  const coursesPage = () => {
+    Link = "/addEbook";
+  };
+  const user_id = localStorage.getItem("user_id");
+  console.log(user_id);
+  if (user_id === null) {
+    return (
+      <Router>
+        <Navigate to="/authentication" replace />
+        <Routes>
+          <Route path="/addEbook" element={<AddEbook />} />
+          <Route path="/user" element={<Users />} />
+          <Route path="/authentication" element={<Login />} />
+          <Route path="/" element={<Thumbnail />} />
+        </Routes>
+      </Router>
+    );
+  }
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar sx={{ backgroundColor: "#3d5afe" }} position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <div style={{ width: "100%" }}>
-            <Box
+    <Router>
+      {" "}
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar
+          sx={{ backgroundColor: "#3d5afe" }}
+          position="fixed"
+          open={open}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
+                marginRight: 5,
+                ...(open && { display: "none" }),
               }}
             >
-              <Typography variant="h6" noWrap component="div" m="10px">
-                ONLINE LIBRARY
-              </Typography>
-              <AccountMenu />
-            </Box>
-          </div>
-        </Toolbar>{" "}
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        open={open}
-        sx={{ backgroundColor: "#e3f2fd" }}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <MenuList open={open} />
-        <Divider />
-      </Drawer>
+              <MenuIcon />
+            </IconButton>
+            <div style={{ width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="h6" noWrap component="div" m="10px">
+                  ONLINE LIBRARY
+                </Typography>
+                <AccountMenu />
+              </Box>
+            </div>
+          </Toolbar>{" "}
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          open={open}
+          sx={{ backgroundColor: "#e3f2fd" }}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <MenuList open={open} />
 
-      <Box component="main" sx={{ flexGrow: 2, p: 2 }}>
-        <DrawerHeader />
-        {/* <FileUploader /> */}
-        {/* <AddEbook /> */}
-        {/* <Viewer /> */}
-        {/* <ImgMediaCard /> */}
-        <Login />
+          <Divider />
+        </Drawer>
+
+        <Box component="main" sx={{ flexGrow: 2, p: 2 }}>
+          <DrawerHeader />
+          {/* <FileUploader /> */}
+          {/* <AddEbook /> */}
+          {/* <Viewer /> */}
+          {/* <ImgMediaCard /> */}
+          {/* <Login /> */}
+          {/* <Tumbnail /> */}
+
+          <Routes>
+            <Route path="/addEbook" element={<AddEbook />} />
+            <Route path="/user" element={<Users />} />
+            <Route path="/authentication" element={<Login />} />
+            <Route path="/" element={<Thumbnail />} />
+          </Routes>
+        </Box>
       </Box>
-    </Box>
+    </Router>
   );
 }
 

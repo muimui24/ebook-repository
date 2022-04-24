@@ -17,7 +17,7 @@ const db = mysql.createPool({
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -66,7 +66,7 @@ app.get("/api/read", (req, res) => {
   });
 });
 
-// ---------------read-------------------------------
+// ---------------delete-------------------------------
 app.delete("/api/delete/:bookId", (req, res) => {
   const bookId = req.params.bookId;
   const sqlDelete = "DELETE FROM ebooks WHERE id = ?";
@@ -109,7 +109,6 @@ app.post("/login", (req, res) => {
 
       if (result.length > 0) {
         req.session.user = result;
-        console.log(req.session.user);
 
         res.send(result);
       } else {
@@ -125,6 +124,90 @@ app.get("/login", (req, res) => {
   } else {
     res.send({ loggedIn: false });
   }
+});
+// -----------create user------------------------------------------
+app.post("/api/insertuser", (req, res) => {
+  const firstName = req.body.fName;
+  const middleName = req.body.mName;
+  const lastName = req.body.lName;
+  const gender = req.body.gender;
+  const userType = req.body.userType;
+  const department = req.body.department;
+  const religion = req.body.religion;
+  const userId = req.body.userId;
+  const password = req.body.password;
+
+  const sqlInsert =
+    "INSERT INTO users (user_id,password, first_name, middle_name, last_name, user_type, department, religion, gender) VALUES (?,?,?,?,?,?,?,?,?);";
+  db.query(
+    sqlInsert,
+    [
+      userId,
+      password,
+      firstName,
+      middleName,
+      lastName,
+      userType,
+      department,
+      religion,
+      gender,
+    ],
+    (err, result) => {
+      console.log(err);
+    }
+  );
+});
+// ---------------get user------------------------------------------
+
+app.get("/api/getuser", (req, res) => {
+  const sqlSelect = "SELECT * FROM users";
+  db.query(sqlSelect, (err, result) => {
+    res.send(result);
+  });
+});
+// ---------------update user-------------------------------
+app.put("/api/updateuser", (req, res) => {
+  const updateFName = req.body.userNewFName;
+  const updateMName = req.body.userNewMName;
+  const updateLName = req.body.userNewLName;
+  const updateGender = req.body.userNewGender;
+  const updateUserType = req.body.userNewUserType;
+  const updateDepartment = req.body.userNewDepartment;
+  const updateReligion = req.body.userNewReligion;
+  const updateUserId = req.body.userNewUserId;
+  const updatePassword = req.body.userNewPassword;
+  const updateId = req.body.userNewId;
+
+  const sqlUpdate =
+    "UPDATE users SET id = ?, user_id = ?, password = ?, first_name = ?, middle_name = ?, last_name = ?, user_type = ?, department = ?, religion = ?, gender = ? WHERE id = ?";
+  db.query(
+    sqlUpdate,
+    [
+      updateId,
+      updateUserId,
+      updatePassword,
+      updateFName,
+      updateMName,
+      updateLName,
+      updateUserType,
+      updateDepartment,
+      updateReligion,
+      updateGender,
+      updateId,
+    ],
+    (err, result) => {
+      if (err) console.log(err);
+      else console.log(result);
+    }
+  );
+});
+// ---------------user delete-------------------------------
+app.delete("/api/deleteuser/:userId", (req, res) => {
+  const userId = req.params.userId;
+  const sqlDelete = "DELETE FROM users WHERE id = ?";
+  db.query(sqlDelete, userId, (err, result) => {
+    if (err) console.log(err);
+  });
 });
 // ------------------------------------------------------------
 

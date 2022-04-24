@@ -20,6 +20,7 @@ export default function Viewer(bookname) {
   function changePageNext() {
     changePage(+1);
   }
+
   // /Users/johnlesterasprec/ebook-repository/server/public/Advances in Human Factors, Business Management, Training and Education_ Proceedings of the AHFE 2016 International Conference on Human Factors, Business Management and Society, July 27-31, 2016, Walt Disney World®, .pdf/server/public/[Rowan_Jones]_Public_Sector_Accounting-3.pdf
   return (
     <div className="App">
@@ -30,11 +31,12 @@ export default function Viewer(bookname) {
         {pageNumber < numPages && (
           <button onClick={changePageNext}>next Page</button>
         )}
+        <button onClick={() => {}}>exit</button>
         <Document
-          file={"//localhost:8000/" + filename}
+          file={"//localhost:8000/[Rowan_Jones]_Public_Sector_Accounting-3.pdf"}
           onLoadSuccess={onDocumentLoadSuccess}
         >
-          <Page height="700" pageNumber={pageNumber} />
+          <Page height="600" pageNumber={pageNumber} />
         </Document>
         <p>
           Page {pageNumber} of {numPages}
