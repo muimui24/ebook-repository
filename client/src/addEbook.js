@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Viewer from "./viewpdf";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -63,7 +64,7 @@ function AddEbook() {
   const [author, setAuthor] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [fileName, setFileName] = useState("");
+  var fileName = "";
 
   const submitBook = () => {
     Axios.post("http://localhost:8000/api/insert", {
@@ -79,10 +80,12 @@ function AddEbook() {
   };
 
   // ------------upload------------------------------
-  const [file, setFile] = useState(null);
-  const onInputChange = (e) => {
-    console.log(e.target.files);
-    setFile(e.target.files[0]);
+  var file = null;
+  const onInputChange = async (e) => {
+    fileName = e.target.files[0].name;
+    file = e.target.files[0];
+    console.log(fileName);
+    console.log(file);
   };
 
   const onSubmit = (e) => {
@@ -271,7 +274,9 @@ function AddEbook() {
         variant="outlined"
         startIcon={<AddCircleIcon />}
         sx={{ m: "6px" }}
-        onClick={handleClickOpen}
+        onClick={() => {
+          handleClickOpen();
+        }}
       >
         {" "}
         Add Book
@@ -282,40 +287,38 @@ function AddEbook() {
             <TableRow>
               <StyledTableCell>Actions</StyledTableCell>
               <StyledTableCell>Title</StyledTableCell>
-              <StyledTableCell align="right">Author</StyledTableCell>
-              <StyledTableCell align="right">Category</StyledTableCell>
+              <StyledTableCell>Author</StyledTableCell>
+              <StyledTableCell>Category</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {ebookList.map((val) => (
               <StyledTableRow key={val.id}>
-                <StyledTableCell align="right">
-                  <StyledTableCell align="right">
-                    {" "}
-                    <Button
+                <StyledTableCell sx={{ maxWidth: 50 }}>
+                  {" "}
+                  <Button
+                    onClick={() => {
+                      updateForm(val);
+                      handleClickOpenUpdate();
+                    }}
+                  >
+                    <EditIcon />
+                  </Button>
+                  <Button>
+                    <DeleteIcon
                       onClick={() => {
-                        updateForm(val);
-                        handleClickOpenUpdate();
+                        deleteBook(val.id);
                       }}
-                    >
-                      <EditIcon />
-                    </Button>
-                    <Button>
-                      <DeleteIcon
-                        onClick={() => {
-                          deleteBook(val.id);
-                        }}
-                        type="button"
-                        sx={{ color: "#ef5350" }}
-                      />
-                    </Button>
-                  </StyledTableCell>
+                      type="button"
+                      sx={{ color: "#ef5350" }}
+                    />
+                  </Button>
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell align="left" component="th" scope="row">
                   {val.title}
                 </StyledTableCell>
-                <StyledTableCell align="right">{val.author}</StyledTableCell>
-                <StyledTableCell align="right">{val.category}</StyledTableCell>
+                <StyledTableCell align="left">{val.author}</StyledTableCell>
+                <StyledTableCell align="left">{val.category}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
