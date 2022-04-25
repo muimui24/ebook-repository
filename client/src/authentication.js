@@ -19,6 +19,7 @@ import { withRouter } from "react-router";
 import {
   BrowserRouter as Router,
   Route,
+  Routes,
   Switch,
   useNavigate,
   useLocation,
@@ -54,10 +55,12 @@ function Login() {
   //       password: data.get("password"),
   //     });
   //   };
+  const user_id = localStorage.getItem("user_id");
   const navigate = useNavigate();
   function redirect() {
     navigate("/");
   }
+
   const user = localStorage.getItem("user_id");
   if (user !== undefined && user !== null) {
     console.log(user);
@@ -70,6 +73,11 @@ function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setStatus] = useState("");
+  const [userType, setUserType] = useState("");
+  const [userName, setUserName] = useState("");
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   Axios.defaults.withCredentials = true;
 
@@ -81,12 +89,21 @@ function Login() {
       if (response.status === 200) {
         localStorage.setItem("user_id", response.data[0].user_id);
         localStorage.setItem("isLogIn", true);
+        localStorage.setItem("user_type", response.data[0].user_type);
+        localStorage.setItem(
+          "user_name",
+          response.data[0].first_name +
+            " " +
+            response.data[0].middle_name +
+            " " +
+            response.data[0].last_name
+        );
         const userId = localStorage.getItem("user_id");
         setStatus(userId !== undefined ? "Login" : "No User Login");
         console.log(loginStatus);
         const user = localStorage.getItem("user_id");
         console.log(user);
-        redirect();
+        refreshPage();
       } else {
         console.log(response.data.message);
       }
@@ -100,7 +117,12 @@ function Login() {
     // });
   });
 
+  // if (user_id !== undefined) {
+  //   return navigate("/");
+  // }
   return (
+    // <Router>
+
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -178,6 +200,7 @@ function Login() {
               sx={{ mt: 3, mb: 2 }}
               onClick={(e) => {
                 logout();
+                navigate("/");
               }}
             >
               logout
@@ -188,6 +211,19 @@ function Login() {
         {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
     </ThemeProvider>
+    /* <Routes>
+        <Route
+          {...rest}
+          element={
+            user_id !== undefined ? (
+              element
+            ) : (
+              <Navigate to="/protected" replace />
+            )
+          }
+        />
+      </Routes>
+    </Router> */
   );
 }
 

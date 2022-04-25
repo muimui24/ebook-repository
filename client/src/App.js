@@ -34,6 +34,7 @@ import Login from "./authentication";
 import ProtectedRoutes from "./routesProtecting";
 import { Routes } from "react-router";
 import Users from "./users";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import Thumbnail from "./displayEbook";
 const drawerWidth = 240;
@@ -203,8 +204,8 @@ function App() {
           <Routes>
             <Route path="/addEbook" element={<AddEbook />} />
             <Route path="/user" element={<Users />} />
-            <Route path="/authentication" element={<Login />} />
             <Route path="/" element={<Thumbnail />} />
+            <Route path="*" element={<Thumbnail />} />
           </Routes>
         </Box>
       </Box>

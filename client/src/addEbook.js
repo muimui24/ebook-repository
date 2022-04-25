@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -18,8 +18,28 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Axios from "axios";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Container,
+  Divider,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Viewer from "./viewpdf";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import SelectInput from "@mui/material/Select/SelectInput";
+import { Select } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -65,6 +85,7 @@ function AddEbook() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   var fileName = "";
+  var thumbnailName = "";
 
   const submitBook = () => {
     Axios.post("http://localhost:8000/api/insert", {
@@ -73,6 +94,7 @@ function AddEbook() {
       ebookCategory: category,
       ebookDescription: description,
       ebookFileName: fileName,
+      ebookThumbnail: thumbnailName,
     }).then(() => {
       alert("successfully inserted");
     });
@@ -94,6 +116,26 @@ function AddEbook() {
     data.append("file", file);
 
     Axios.post("//localhost:8000/upload", data)
+      .then((e) => {
+        console.log("Success");
+      })
+      .catch((e) => {
+        console.error("Error", e);
+      });
+  };
+  var thumb = null;
+  const inputThumbnail = async (e) => {
+    thumbnailName = e.target.files[0].name;
+    thumb = e.target.files[0];
+    console.log(thumbnailName);
+    console.log(thumb);
+  };
+  const submitThumbnail = (e) => {
+    const bookdata = new FormData();
+
+    bookdata.append("file", thumb);
+
+    Axios.post("//localhost:8000/upload", bookdata)
       .then((e) => {
         console.log("Success");
       })
@@ -143,7 +185,28 @@ function AddEbook() {
     });
     handleClickCloseUpdate();
   };
+  const [searchBy, setAge] = React.useState("");
 
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+  const [searchInput, setSearchInput] = useState("");
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+  };
+  const filtered = ebookList.filter((item) => {
+    if (searchBy === "category") {
+      return item.category.toLowerCase().includes(searchInput.toLowerCase());
+    } else if (searchBy === "author") {
+      return item.author.toLowerCase().includes(searchInput.toLowerCase());
+    } else if (searchBy === "title") {
+      return item.title.toLowerCase().includes(searchInput.toLowerCase());
+    }
+    return item.title.toLowerCase().includes(searchInput.toLowerCase());
+  });
+  function refreshPage() {
+    window.location.reload(false);
+  }
   return (
     <>
       {/* ---------------add ebook dialog ---------*/}
@@ -191,11 +254,20 @@ function AddEbook() {
               setDescription(e.target.value);
             }}
           />
+          <h6>Upload PDF file:</h6>
           <input
             type="file"
             className="form-control"
             multiple
+            label="upload pdf"
             onChange={onInputChange}
+          />
+          <h6>Upload thumbnail image:</h6>
+          <input
+            type="file"
+            className="form-control"
+            multiple
+            onChange={inputThumbnail}
           />
         </DialogContent>
         <DialogActions>
@@ -203,6 +275,7 @@ function AddEbook() {
             onClick={() => {
               onSubmit();
               submitBook();
+              submitThumbnail();
             }}
           >
             Submit
@@ -270,6 +343,31 @@ function AddEbook() {
       </Dialog>
       {/* ---------------update ebook dialog ---------*/}
       <h2>E-BOOKS</h2>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <TextField
+          sx={{ width: "75%", display: "flex" }}
+          placeholder="Search..."
+          label="Search"
+          type="text"
+          onChange={(e) => searchItems(e.target.value)}
+        />
+        <FormControl sx={{ width: "25%", display: "flex" }}>
+          <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={searchBy}
+            label="Filter"
+            onChange={handleChange}
+          >
+            <MenuItem selected value="title">
+              By Title
+            </MenuItem>
+            <MenuItem value="category">By Category</MenuItem>
+            <MenuItem value="author">By Author</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       <Button
         variant="outlined"
         startIcon={<AddCircleIcon />}
@@ -292,7 +390,7 @@ function AddEbook() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ebookList.map((val) => (
+            {filtered.map((val) => (
               <StyledTableRow key={val.id}>
                 <StyledTableCell sx={{ maxWidth: 50 }}>
                   {" "}

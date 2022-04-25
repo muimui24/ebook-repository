@@ -18,7 +18,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Axios from "axios";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import SelectInput from "@mui/material/Select/SelectInput";
+import { Select } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Viewer from "./viewpdf";
 import { Box, flexbox } from "@mui/system";
@@ -145,7 +149,25 @@ function Users() {
       userNewUserId: form.updateUserId,
     });
   };
+  const [searchBy, setAge] = React.useState("");
 
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+  const [searchInput, setSearchInput] = useState("");
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+  };
+  const filtered = userList.filter((item) => {
+    if (searchBy === "name") {
+      return item.first_name.toLowerCase().includes(searchInput.toLowerCase());
+    } else if (searchBy === "department") {
+      return item.department.toLowerCase().includes(searchInput.toLowerCase());
+    } else if (searchBy === "user") {
+      return item.user_type.toLowerCase().includes(searchInput.toLowerCase());
+    }
+    return item.first_name.toLowerCase().includes(searchInput.toLowerCase());
+  });
   return (
     <>
       {/* ---------------add ebook dialog ---------*/}
@@ -438,6 +460,31 @@ function Users() {
       </Dialog>
       {/* ---------------update ebook dialog ---------*/}
       <h2>MANAGE USERS</h2>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <TextField
+          sx={{ width: "75%", display: "flex" }}
+          placeholder="Search..."
+          label="Search"
+          type="text"
+          onChange={(e) => searchItems(e.target.value)}
+        />
+        <FormControl sx={{ width: "25%", display: "flex" }}>
+          <InputLabel id="demo-simple-select-label">Filter</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={searchBy}
+            label="Filter"
+            onChange={handleChange}
+          >
+            <MenuItem selected value="name">
+              By Name
+            </MenuItem>
+            <MenuItem value="department">By Department</MenuItem>
+            <MenuItem value="user">By UserType</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
       <Button
         variant="outlined"
         startIcon={<AddCircleIcon />}
@@ -463,7 +510,7 @@ function Users() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userList.map((val) => (
+            {filtered.map((val) => (
               <StyledTableRow key={val.id}>
                 <StyledTableCell sx={{ maxWidth: 50 }}>
                   {" "}

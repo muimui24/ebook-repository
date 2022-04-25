@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
@@ -23,10 +24,18 @@ export default function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const user_id = localStorage.getItem("user_name");
+
+  function logout() {
+    localStorage.removeItem("user_id");
+  }
+  function refreshPage() {
+    window.location.reload(false);
+  }
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="Log out">
           <IconButton
             onClick={handleClick}
             size="small"
@@ -35,9 +44,7 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>
-              <AccountCircleIcon />
-            </Avatar>
+            <LogoutIcon />
           </IconButton>
         </Tooltip>
       </Box>
@@ -77,17 +84,16 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem>
-          <Avatar /> My account
+          <Avatar /> {user_id}
         </MenuItem>
         <Divider />
 
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem>
+        <MenuItem
+          onClick={() => {
+            logout();
+            refreshPage();
+          }}
+        >
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

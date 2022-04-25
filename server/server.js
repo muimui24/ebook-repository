@@ -46,12 +46,20 @@ app.post("/api/insert", (req, res) => {
   const ebookCategory = req.body.ebookCategory;
   const ebookDescription = req.body.ebookDescription;
   const ebookFileName = req.body.ebookFileName;
+  const ebookThumbnail = req.body.ebookThumbnail;
 
   const sqlInsert =
-    "INSERT INTO ebooks (title, author, category, file_name, description) VALUES (?,?,?,?,?);";
+    "INSERT INTO ebooks (title, author, category, file_name, description, thumbnail) VALUES (?,?,?,?,?,?);";
   db.query(
     sqlInsert,
-    [ebookTitle, ebookAuthor, ebookCategory, ebookFileName, ebookDescription],
+    [
+      ebookTitle,
+      ebookAuthor,
+      ebookCategory,
+      ebookFileName,
+      ebookDescription,
+      ebookThumbnail,
+    ],
     (err, result) => {
       console.log(result);
     }
@@ -60,6 +68,13 @@ app.post("/api/insert", (req, res) => {
 // ---------------read------------------------------------------
 
 app.get("/api/read", (req, res) => {
+  const sqlSelect = "SELECT * FROM ebooks";
+  db.query(sqlSelect, (err, result) => {
+    res.send(result);
+  });
+});
+
+app.get("/api/readbook", (req, res) => {
   const sqlSelect = "SELECT * FROM ebooks";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
