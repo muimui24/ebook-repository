@@ -119,7 +119,7 @@ app.post("/login", (req, res) => {
     [userId, password],
     (err, result) => {
       if (err) {
-        res.send({ err: err });
+        res.send({ message: "error" });
       }
 
       if (result.length > 0) {
@@ -169,6 +169,25 @@ app.post("/api/insertuser", (req, res) => {
     ],
     (err, result) => {
       console.log(err);
+    }
+  );
+});
+// -----------log user------------------------------------------
+app.post("/api/logreport", (req, res) => {
+  const logInId = req.body.logInId;
+  const logInName = req.body.logInName;
+  const logInDepartment = req.body.logInDepartment;
+  const logInType = req.body.logInType;
+
+  const sqlInsert =
+    "INSERT INTO login_reports (user_id,user_name, user_type, user_department) VALUES (?,?,?,?);";
+  db.query(
+    sqlInsert,
+    [logInId, logInName, logInDepartment, logInType],
+    (err, result) => {
+      console.log(err);
+
+      res.send(result);
     }
   );
 });

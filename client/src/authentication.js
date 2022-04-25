@@ -61,21 +61,21 @@ function Login() {
     navigate("/");
   }
 
-  const user = localStorage.getItem("user_id");
-  if (user !== undefined && user !== null) {
-    console.log(user);
-    console.log("is Login");
-    //todo: redirect to main
-  }
-  function logout() {
-    localStorage.removeItem("user_id");
-  }
+  // const user = localStorage.getItem("user_id");
+  // if (user !== undefined && user !== null) {
+  //   console.log(user);
+  //   console.log("is Login");
+  //   //todo: redirect to main
+  // }
+  // function logout() {
+  //   localStorage.removeItem("user_id");
+  // }
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setStatus] = useState("");
   const [userType, setUserType] = useState("");
   const [userName, setUserName] = useState("");
-  function refreshPage() {
+  async function refreshPage() {
     window.location.reload(false);
   }
 
@@ -85,29 +85,60 @@ function Login() {
     Axios.post("http://localhost:8000/login", {
       userId: userId,
       password: password,
-    }).then((response) => {
-      if (response.status === 200) {
-        localStorage.setItem("user_id", response.data[0].user_id);
-        localStorage.setItem("isLogIn", true);
-        localStorage.setItem("user_type", response.data[0].user_type);
-        localStorage.setItem(
-          "user_name",
-          response.data[0].first_name +
-            " " +
-            response.data[0].middle_name +
-            " " +
-            response.data[0].last_name
-        );
-        const userId = localStorage.getItem("user_id");
-        setStatus(userId !== undefined ? "Login" : "No User Login");
-        console.log(loginStatus);
-        const user = localStorage.getItem("user_id");
-        console.log(user);
-        refreshPage();
-      } else {
-        console.log(response.data.message);
-      }
+    })
+      .then((response) => {
+        if (response.data.message !== "Incorrect password") {
+          console.log(response);
+          localStorage.setItem("user_id", response.data[0].user_id);
+          localStorage.setItem("isLogIn", true);
+          localStorage.setItem("user_type", response.data[0].user_type);
+          localStorage.setItem("user_dep", response.data[0].department);
+          localStorage.setItem(
+            "user_name",
+            response.data[0].first_name +
+              " " +
+              response.data[0].middle_name +
+              " " +
+              response.data[0].last_name
+          );
+          id = localStorage.getItem("user_id");
+          name = localStorage.getItem("user_name");
+          department = localStorage.getItem("user_dep");
+          type = localStorage.getItem("user_type");
+
+          // const userId = localStorage.getItem("user_id ");
+          // setStatus(userId !== undefined ? "Login" : "No User Login");
+          // console.log(loginStatus);
+          // const user = localStorage.getItem("user_id");
+          // console.log(user);
+          submitlog();
+          setStatus("");
+          refreshPage();
+        } else {
+          setStatus("Incorrect ID/Password");
+        }
+      })
+      .then((response) => {});
+  };
+  // ------------------log in report -----------------
+
+  // const [id, setid] = useState("");
+  // const [name, setName] = useState("");
+  // const [department, setDepartment] = useState("");
+  // const [type, setType] = useState("");
+  var id = "";
+  var name = "";
+  var department = "";
+  var type = "";
+
+  const submitlog = () => {
+    Axios.post("http://localhost:8000/api/logreport", {
+      logInId: id,
+      logInName: name,
+      logInDepartment: department,
+      logInType: type,
     });
+    console.log(name);
   };
   useEffect(() => {
     // Axios.get("http://localhost:8000/login").then((response) => {
@@ -194,17 +225,7 @@ function Login() {
             >
               Sign Up
             </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={(e) => {
-                logout();
-                navigate("/");
-              }}
-            >
-              logout
-            </Button>
+
             <Grid container justifyContent="flex-end"></Grid>
           </Box>
         </Box>

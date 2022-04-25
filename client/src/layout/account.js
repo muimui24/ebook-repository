@@ -32,6 +32,7 @@ export default function AccountMenu() {
   function refreshPage() {
     window.location.reload(false);
   }
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
