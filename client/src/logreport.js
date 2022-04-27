@@ -44,7 +44,7 @@ const Print = () => {
             id: "",
             user_id: "--",
             user_name: "--",
-            user_department: "NO HISTORY OF LOG IN TO THIS DAY",
+            user_department: "NO HISTORY OF LOG IN AT THIS DAY",
             user_type: "--",
             time: "--",
           },

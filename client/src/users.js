@@ -78,9 +78,9 @@ function Users() {
 
   const submitUser = () => {
     Axios.post("http://localhost:8000/api/insertuser", {
-      fName: firstName,
-      mName: middleName,
-      lName: lastName,
+      fName: firstName.toLocaleUpperCase(),
+      mName: middleName.toUpperCase(),
+      lName: lastName.toLocaleUpperCase(),
       gender: Gender,
       userType: userType,
       department: department,
@@ -329,7 +329,21 @@ function Users() {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-      {/* ---------------add user dialog ---------*/}
+      {/* ---------------delete confirmation ---------*/}
+      {/* <Dialog open={open}>
+        <DialogTitle>Confirm Delete?</DialogTitle>
+        <DialogContent></DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              submitUser();
+            }}
+          >
+            Submit
+          </Button>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog> */}
       {/* ---------------update user dialog ---------*/}
       <Dialog open={openUpdate}>
         <DialogTitle>User Information</DialogTitle>
