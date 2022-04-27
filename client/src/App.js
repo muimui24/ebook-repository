@@ -14,29 +14,21 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import {
-  BrowserRouter as Router,
-  Link,
-  Route,
-  Switch,
-  useNavigate,
-  useLocation,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Navigate } from "react-router-dom";
 import MenuList from "./layout/sidebar";
 import AccountMenu from "./layout/account";
-import { FileUploader } from "./components";
+
 import AddEbook from "./addEbook";
-import Viewer from "./viewpdf";
-import ImgMediaCard from "./displayEbook";
-import { padding } from "@mui/system";
+
 import Login from "./authentication";
-import ProtectedRoutes from "./routesProtecting";
+
 import { Routes } from "react-router";
 import Users from "./users";
-import LogoutIcon from "@mui/icons-material/Logout";
+
+import Print from "./logreport";
 
 import Thumbnail from "./displayEbook";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -116,9 +108,7 @@ function App() {
     setOpen(false);
   };
   // let location = useLocation();
-  const coursesPage = () => {
-    Link = "/addEbook";
-  };
+
   const user_id = localStorage.getItem("user_id");
   console.log(user_id);
   if (user_id === null) {
@@ -206,6 +196,7 @@ function App() {
             <Route path="/user" element={<Users />} />
             <Route path="/" element={<Thumbnail />} />
             <Route path="*" element={<Thumbnail />} />
+            <Route path="/print" element={<Print />} />
           </Routes>
         </Box>
       </Box>

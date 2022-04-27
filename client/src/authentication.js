@@ -1,11 +1,9 @@
-import react, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -13,37 +11,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Axios from "axios";
-import Thumbnail from "./displayEbook";
-import App from "./App";
-import { withRouter } from "react-router";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Switch,
-  useNavigate,
-  useLocation,
-  Navigate,
-  Redirect,
-} from "react-router-dom";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 function Login() {
@@ -55,11 +22,6 @@ function Login() {
   //       password: data.get("password"),
   //     });
   //   };
-  const user_id = localStorage.getItem("user_id");
-  const navigate = useNavigate();
-  function redirect() {
-    navigate("/");
-  }
 
   // const user = localStorage.getItem("user_id");
   // if (user !== undefined && user !== null) {
@@ -73,8 +35,7 @@ function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setStatus] = useState("");
-  const [userType, setUserType] = useState("");
-  const [userName, setUserName] = useState("");
+
   async function refreshPage() {
     window.location.reload(false);
   }
@@ -171,6 +132,7 @@ function Login() {
           <Typography component="h1" variant="h4">
             Log In
           </Typography>
+
           <Typography component="h1" variant="h6" color="red">
             {loginStatus}
           </Typography>

@@ -1,12 +1,8 @@
 import * as React from "react";
 
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import ImageListItemBar from "@mui/material/ImageListItemBar";
-import Viewer from "./viewpdf";
+
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -14,10 +10,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Container,
-  Divider,
   Grid,
-  IconButton,
   Typography,
 } from "@mui/material";
 import { TextField } from "@mui/material";
@@ -25,10 +18,9 @@ import "./display.css";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { useState } from "react";
 import Axios from "axios";
-import Head from "next/head";
 
 export default function Thumbnail() {
   const [numPages, setNumPages] = React.useState(null);
@@ -42,7 +34,6 @@ export default function Thumbnail() {
     });
   }, []);
 
-  var filename = "[Rowan_Jones]_Public_Sector_Accounting-3.pdf";
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);
@@ -57,9 +48,7 @@ export default function Thumbnail() {
   function changePageNext() {
     changePage(+1);
   }
-  function toView(book) {
-    setPdfName(book);
-  }
+
   function opener() {
     setViewer(true);
   }
@@ -76,52 +65,58 @@ export default function Thumbnail() {
     setSearchInput(searchValue);
   };
   const filtered = ebookList.filter((item) => {
-    if (searchBy === "category") {
-      return item.category.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchBy === "author") {
-      return item.author.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchBy === "title") {
-      return item.title.toLowerCase().includes(searchInput.toLowerCase());
-    }
-    return item.title.toLowerCase().includes(searchInput.toLowerCase());
+    return (
+      item.category.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.author.toLowerCase().includes(searchInput.toLowerCase())
+    );
   });
   if (viewer === true) {
     return (
-      <div className="pdf" onContextMenu={(e) => e.preventDefault()}>
+      <div
+        className="pdf"
+        onContextMenu={(e) => e.preventDefault()}
+        display="flex"
+      >
+        <Grid
+          container
+          align="center"
+          sx={{
+            justifyContent: "space-between",
+          }}
+        >
+          {pageNumber > 1 && (
+            <Button variant="contained" onClick={changePageBack}>
+              Previous Page
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            onClick={() => {
+              close();
+            }}
+          >
+            exit
+          </Button>{" "}
+          {pageNumber < numPages && (
+            <Button variant="contained" onClick={changePageNext}>
+              next Page
+            </Button>
+          )}
+        </Grid>
         <header className="App-header">
           <Box
             sx={{
               justifyContent: "space-between",
             }}
           >
-            <Button
-              variant="contained"
-              onClick={() => {
-                close();
-              }}
-            >
-              exit
-            </Button>{" "}
             <Document file={pdfName} onLoadSuccess={onDocumentLoadSuccess}>
-              <Page height="700" pageNumber={pageNumber} />
+              <Page height={300} width={650} pageNumber={pageNumber} />
             </Document>
-            {pageNumber > 1 && (
-              <Button variant="contained" onClick={changePageBack}>
-                Previous Page
-              </Button>
-            )}
           </Box>
           <p>
             Page {pageNumber} of {numPages}
           </p>{" "}
-          <Box>
-            {" "}
-            {pageNumber < numPages && (
-              <Button variant="contained" onClick={changePageNext}>
-                next Page
-              </Button>
-            )}
-          </Box>
         </header>
       </div>
     );
@@ -129,7 +124,7 @@ export default function Thumbnail() {
     return (
       <div>
         <h2>E-BOOKS</h2>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex" }}>
           <TextField
             sx={{ width: "75%", display: "flex" }}
             placeholder="Search..."
@@ -137,22 +132,6 @@ export default function Thumbnail() {
             type="text"
             onChange={(e) => searchItems(e.target.value)}
           />
-          <FormControl sx={{ width: "25%", display: "flex" }}>
-            <InputLabel id="demo-simple-select-label">Filter</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={searchBy}
-              label="Filter"
-              onChange={handleChange}
-            >
-              <MenuItem selected value="title">
-                By Title
-              </MenuItem>
-              <MenuItem value="category">By Category</MenuItem>
-              <MenuItem value="author">By Author</MenuItem>
-            </Select>
-          </FormControl>
         </Box>
         <Grid container>
           {filtered.map((val) => (
@@ -192,7 +171,7 @@ export default function Thumbnail() {
                       setPdfName("//localhost:8000/" + val.file_name);
                     }}
                   >
-                    Share
+                    Read
                   </Button>
                 </CardActions>
               </Card>

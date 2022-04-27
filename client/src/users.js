@@ -87,13 +87,15 @@ function Users() {
       religion: religion,
       userId: id,
       password: password,
-    }).then(() => {
-      alert("successfully inserted");
+    }).then((response) => {
+      alert("Successfully Uploaded");
+      handleClose();
+      window.location.reload(false);
     });
     console.log(firstName);
   };
 
-  // ------------get book from data base------------------------
+  // ------------get user from data base------------------------
 
   const [userList, setUserList] = useState([]);
   useState(() => {
@@ -103,9 +105,14 @@ function Users() {
   }, []);
   // ------------delete book from data base----------------------
   const deleteUser = (userId) => {
-    Axios.delete(`http://localhost:8000/api/deleteuser/${userId}`);
+    Axios.delete(`http://localhost:8000/api/deleteuser/${userId}`).then(
+      (response) => {
+        alert("Successfully Deleted");
+        window.location.reload(false);
+      }
+    );
   };
-  // ------------update book from data base----------------------
+  // ------------update user from data base----------------------
   const [form, setForm] = useState([
     {
       updateId: 0,
@@ -147,8 +154,13 @@ function Users() {
       userNewReligion: form.updateReligion,
       userNewPassword: form.updatePassword,
       userNewUserId: form.updateUserId,
+    }).then((response) => {
+      handleClickCloseUpdate();
+      alert("Successfully Updated");
+      window.location.reload(false);
     });
   };
+
   const [searchBy, setAge] = React.useState("");
 
   const handleChange = (event) => {
@@ -159,18 +171,20 @@ function Users() {
     setSearchInput(searchValue);
   };
   const filtered = userList.filter((item) => {
-    if (searchBy === "name") {
-      return item.first_name.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchBy === "department") {
-      return item.department.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchBy === "user") {
-      return item.user_type.toLowerCase().includes(searchInput.toLowerCase());
-    }
-    return item.first_name.toLowerCase().includes(searchInput.toLowerCase());
+    return (
+      item.first_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.department.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.user_id.toString().includes(searchInput.toString()) ||
+      item.user_type.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.last_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.middle_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.religion.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.gender.toLowerCase().includes(searchInput.toLowerCase())
+    );
   });
   return (
     <>
-      {/* ---------------add ebook dialog ---------*/}
+      {/* ---------------add user dialog ---------*/}
       <Dialog open={open}>
         <DialogTitle>User Information</DialogTitle>
         <DialogContent>
@@ -315,8 +329,8 @@ function Users() {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-      {/* ---------------add ebook dialog ---------*/}
-      {/* ---------------update ebook dialog ---------*/}
+      {/* ---------------add user dialog ---------*/}
+      {/* ---------------update user dialog ---------*/}
       <Dialog open={openUpdate}>
         <DialogTitle>User Information</DialogTitle>
         <DialogContent>
@@ -466,24 +480,8 @@ function Users() {
           placeholder="Search..."
           label="Search"
           type="text"
-          onChange={(e) => searchItems(e.target.value)}
+          onChange={(e) => searchItems(e.target.value.toString())}
         />
-        <FormControl sx={{ width: "25%", display: "flex" }}>
-          <InputLabel id="demo-simple-select-label">Filter</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={searchBy}
-            label="Filter"
-            onChange={handleChange}
-          >
-            <MenuItem selected value="name">
-              By Name
-            </MenuItem>
-            <MenuItem value="department">By Department</MenuItem>
-            <MenuItem value="user">By UserType</MenuItem>
-          </Select>
-        </FormControl>
       </Box>
       <Button
         variant="outlined"

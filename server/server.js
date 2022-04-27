@@ -61,7 +61,7 @@ app.post("/api/insert", (req, res) => {
       ebookThumbnail,
     ],
     (err, result) => {
-      console.log(result);
+      res.send(result);
     }
   );
 });
@@ -86,7 +86,9 @@ app.delete("/api/delete/:bookId", (req, res) => {
   const bookId = req.params.bookId;
   const sqlDelete = "DELETE FROM ebooks WHERE id = ?";
   db.query(sqlDelete, bookId, (err, result) => {
-    if (err) console.log(err);
+    if (result) {
+      res.send(result);
+    }
   });
 });
 // ---------------update-------------------------------
@@ -168,7 +170,7 @@ app.post("/api/insertuser", (req, res) => {
       gender,
     ],
     (err, result) => {
-      console.log(err);
+      res.send(result);
     }
   );
 });
@@ -178,12 +180,12 @@ app.post("/api/logreport", (req, res) => {
   const logInName = req.body.logInName;
   const logInDepartment = req.body.logInDepartment;
   const logInType = req.body.logInType;
-
+  const logDate = new Date(new Date().setHours(0, 0, 0, 0)).toDateString();
   const sqlInsert =
-    "INSERT INTO login_reports (user_id,user_name, user_type, user_department) VALUES (?,?,?,?);";
+    "INSERT INTO login_reports (user_id,user_name,date, user_type, user_department) VALUES (?,?,?,?,?);";
   db.query(
     sqlInsert,
-    [logInId, logInName, logInDepartment, logInType],
+    [logInId, logInName, logDate, logInType, logInDepartment],
     (err, result) => {
       console.log(err);
 
@@ -191,10 +193,32 @@ app.post("/api/logreport", (req, res) => {
     }
   );
 });
+// ---------------get log------------------------------------------
+
+app.post("/api/userlog", (req, res) => {
+  const date = req.body.dateLog;
+
+  db.query(
+    "SELECT * FROM login_reports WHERE date =? AND user_type !='admin' ",
+    [date],
+    (err, result) => {
+      if (result.length === 0) {
+        res.send({ message: "failed" });
+      }
+
+      if (result.length > 0) {
+        res.send(result);
+      } else {
+        console.log(result.length);
+      }
+    }
+  );
+});
+
 // ---------------get user------------------------------------------
 
 app.get("/api/getuser", (req, res) => {
-  const sqlSelect = "SELECT * FROM users";
+  const sqlSelect = "SELECT * FROM users WHERE user_type != 'admin' ";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
@@ -231,7 +255,9 @@ app.put("/api/updateuser", (req, res) => {
     ],
     (err, result) => {
       if (err) console.log(err);
-      else console.log(result);
+      else {
+        res.send(result);
+      }
     }
   );
 });
@@ -240,7 +266,9 @@ app.delete("/api/deleteuser/:userId", (req, res) => {
   const userId = req.params.userId;
   const sqlDelete = "DELETE FROM users WHERE id = ?";
   db.query(sqlDelete, userId, (err, result) => {
-    if (err) console.log(err);
+    if (result) {
+      res.send(result);
+    }
   });
 });
 // ------------------------------------------------------------

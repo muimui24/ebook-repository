@@ -12,33 +12,19 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+
 import DialogTitle from "@mui/material/DialogTitle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Axios from "axios";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container,
-  Divider,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import Viewer from "./viewpdf";
+import { Box, Button } from "@mui/material";
+
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import SelectInput from "@mui/material/Select/SelectInput";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import { Select } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -95,8 +81,10 @@ function AddEbook() {
       ebookDescription: description,
       ebookFileName: fileName,
       ebookThumbnail: thumbnailName,
-    }).then(() => {
-      alert("successfully inserted");
+    }).then((result) => {
+      alert("Successfully Uploaded");
+      handleClose();
+      window.location.reload(false);
     });
     console.log(title);
   };
@@ -146,6 +134,7 @@ function AddEbook() {
   // ------------get book from data base------------------------
 
   const [ebookList, setEbookList] = useState([]);
+
   useState(() => {
     Axios.get("http://localhost:8000/api/read").then((response) => {
       setEbookList(response.data);
@@ -153,7 +142,12 @@ function AddEbook() {
   }, []);
   // ------------delete book from data base----------------------
   const deleteBook = (bookId) => {
-    Axios.delete(`http://localhost:8000/api/delete/${bookId}`);
+    Axios.delete(`http://localhost:8000/api/delete/${bookId}`).then(
+      (response) => {
+        window.location.reload(false);
+        alert("Successfully Deleted");
+      }
+    );
   };
   // ------------update book from data base----------------------
   const [form, setForm] = useState([
@@ -184,6 +178,8 @@ function AddEbook() {
       ebookNewDescription: form.updateDescription,
     });
     handleClickCloseUpdate();
+    alert("Successfully updated");
+    window.location.reload(false);
   };
   const [searchBy, setAge] = React.useState("");
 
@@ -195,18 +191,13 @@ function AddEbook() {
     setSearchInput(searchValue);
   };
   const filtered = ebookList.filter((item) => {
-    if (searchBy === "category") {
-      return item.category.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchBy === "author") {
-      return item.author.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchBy === "title") {
-      return item.title.toLowerCase().includes(searchInput.toLowerCase());
-    }
-    return item.title.toLowerCase().includes(searchInput.toLowerCase());
+    return (
+      item.category.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.author.toLowerCase().includes(searchInput.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchInput.toLowerCase())
+    );
   });
-  function refreshPage() {
-    window.location.reload(false);
-  }
+
   return (
     <>
       {/* ---------------add ebook dialog ---------*/}
@@ -351,22 +342,6 @@ function AddEbook() {
           type="text"
           onChange={(e) => searchItems(e.target.value)}
         />
-        <FormControl sx={{ width: "25%", display: "flex" }}>
-          <InputLabel id="demo-simple-select-label">Filter</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={searchBy}
-            label="Filter"
-            onChange={handleChange}
-          >
-            <MenuItem selected value="title">
-              By Title
-            </MenuItem>
-            <MenuItem value="category">By Category</MenuItem>
-            <MenuItem value="author">By Author</MenuItem>
-          </Select>
-        </FormControl>
       </Box>
       <Button
         variant="outlined"
@@ -393,7 +368,6 @@ function AddEbook() {
             {filtered.map((val) => (
               <StyledTableRow key={val.id}>
                 <StyledTableCell sx={{ maxWidth: 50 }}>
-                  {" "}
                   <Button
                     onClick={() => {
                       updateForm(val);
