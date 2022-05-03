@@ -126,7 +126,7 @@ export default function Thumbnail() {
         <h2>E-BOOKS</h2>
         <Box sx={{ display: "flex" }}>
           <TextField
-            sx={{ width: "75%", display: "flex" }}
+            sx={{ width: "100%", display: "flex" }}
             placeholder="Search..."
             label="Search"
             type="text"
@@ -136,7 +136,7 @@ export default function Thumbnail() {
         <Grid container>
           {filtered.map((val) => (
             <Grid margin={1.5} item xs={9} sm={6} md={2} key={val.id}>
-              <Card sx={{ maxWidth: 345 }}>
+              <Card margin={1.5} sx={{ maxHeight: "100%" }}>
                 <CardActionArea>
                   <CardMedia
                     component="img"
