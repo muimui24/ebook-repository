@@ -81,6 +81,7 @@ const Print = () => {
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <h2>PRINT REPORT:</h2>
       <div className="print__section">
         <style>{getPageMargins()}</style>
         <div className="container">
@@ -116,7 +117,10 @@ const Print = () => {
               <div ref={componentRef} className="card" sx={{ p: 20 }}>
                 <div className="float__start">
                   <h3 className="card-title mb-0" align="center">
-                    {Title}
+                    ISU-R
+                  </h3>
+                  <h3 className="card-title mb-0" align="center">
+                    E-LIBRARY
                   </h3>
                   <h4 className="card-title mb-0" align="center">
                     Users Log In Report

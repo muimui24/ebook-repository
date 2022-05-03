@@ -29,7 +29,7 @@ import { Select } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#4caf50",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -333,7 +333,7 @@ function AddEbook() {
         </DialogActions>
       </Dialog>
       {/* ---------------update ebook dialog ---------*/}
-      <h2>E-BOOKS</h2>
+      <h2>MANAGE E-BOOKS</h2>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <TextField
           sx={{ width: "75%", display: "flex" }}
@@ -367,7 +367,7 @@ function AddEbook() {
           <TableBody>
             {filtered.map((val) => (
               <StyledTableRow key={val.id}>
-                <StyledTableCell sx={{ maxWidth: 50 }}>
+                <StyledTableCell>
                   <Button
                     onClick={() => {
                       updateForm(val);

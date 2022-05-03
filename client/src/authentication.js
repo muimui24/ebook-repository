@@ -51,6 +51,7 @@ function Login() {
         if (response.data.message !== "Incorrect password") {
           console.log(response);
           localStorage.setItem("user_id", response.data[0].user_id);
+          localStorage.setItem("id", response.data[0].id);
           localStorage.setItem("isLogIn", true);
           localStorage.setItem("user_type", response.data[0].user_type);
           localStorage.setItem("user_dep", response.data[0].department);
@@ -126,10 +127,11 @@ function Login() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h4">
+            <img src="/logoisu.png" height={60} /> ISU-R E-Library
+          </Typography>
+
+          <Typography component="h1" variant="h5">
             Log In
           </Typography>
 
@@ -185,7 +187,7 @@ function Login() {
                 login();
               }}
             >
-              Sign Up
+              LOG IN
             </Button>
 
             <Grid container justifyContent="flex-end"></Grid>

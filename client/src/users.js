@@ -29,7 +29,7 @@ import { Box, flexbox } from "@mui/system";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: "#4caf50",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -160,12 +160,32 @@ function Users() {
       window.location.reload(false);
     });
   };
-
-  const [searchBy, setAge] = React.useState("");
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  // ------------------------resetpasword--------------------------
+  const [openReset, setOpenReset] = useState(false);
+  const openR = () => {
+    setOpenReset(true);
   };
+  const closeR = () => {
+    setOpenReset(false);
+  };
+  const [defaultPasword, setDefaultPassword] = useState("isuroxas1978");
+  var user_id;
+  const getid = (id) => {
+    user_id = id;
+    console.log(user_id);
+  };
+
+  const updatepassword = () => {
+    Axios.put("http://localhost:8000/api/resetpassword", {
+      id: user_id,
+      NewPassword: defaultPasword,
+    });
+    handleClickCloseUpdate();
+    alert("Successfully updated");
+    window.location.reload(false);
+  };
+  // ------------------------resetpasword--------------------------
+
   const [searchInput, setSearchInput] = useState("");
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
@@ -184,6 +204,20 @@ function Users() {
   });
   return (
     <>
+      <Dialog open={openReset}>
+        <DialogTitle>Confirm Reset?</DialogTitle>
+        <DialogContent></DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              updatepassword();
+            }}
+          >
+            Confirm
+          </Button>
+          <Button onClick={closeR}>Close</Button>
+        </DialogActions>
+      </Dialog>
       {/* ---------------add user dialog ---------*/}
       <Dialog open={open}>
         <DialogTitle>User Information</DialogTitle>
@@ -524,8 +558,7 @@ function Users() {
           <TableBody>
             {filtered.map((val) => (
               <StyledTableRow key={val.id}>
-                <StyledTableCell sx={{ maxWidth: 50 }}>
-                  {" "}
+                <StyledTableCell>
                   <Button
                     onClick={() => {
                       updateForm(val);
@@ -534,6 +567,14 @@ function Users() {
                     }}
                   >
                     <EditIcon />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      openR();
+                      getid(val.id);
+                    }}
+                  >
+                    Reset Password
                   </Button>
                   <Button>
                     <DeleteIcon

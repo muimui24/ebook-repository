@@ -11,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 
 import Logout from "@mui/icons-material/Logout";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,7 +43,7 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <LogoutIcon />
+            <PersonIcon />
           </IconButton>
         </Tooltip>
       </Box>

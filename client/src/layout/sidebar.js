@@ -2,7 +2,7 @@ import LibraryBooksRoundedIcon from "@mui/icons-material/LibraryBooksRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-
+import AdfScannerIcon from "@mui/icons-material/AdfScanner";
 import {
   List,
   ListItemButton,
@@ -91,7 +91,29 @@ export default function MenuList(open) {
           >
             <ManageAccountsIcon />
           </ListItemIcon>
-          <ListItemText primary="Manage Users" sx={{ opacity: open ? 1 : 0 }} />
+          <ListItemText primary="Print Report" sx={{ opacity: open ? 1 : 0 }} />
+        </ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            navigate("/print");
+          }}
+          key="Print Report"
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+            }}
+          >
+            <AdfScannerIcon />
+          </ListItemIcon>
+          <ListItemText primary="Print Report" sx={{ opacity: open ? 1 : 0 }} />
         </ListItemButton>
       </List>
     );
@@ -119,6 +141,28 @@ export default function MenuList(open) {
           <HomeRoundedIcon />
         </ListItemIcon>
         <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+      </ListItemButton>
+      <ListItemButton
+        onClick={() => {
+          navigate("/reset");
+        }}
+        key="home"
+        sx={{
+          minHeight: 48,
+          justifyContent: open ? "initial" : "center",
+          px: 2.5,
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: open ? 3 : "auto",
+            justifyContent: "center",
+          }}
+        >
+          <ManageAccountsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Reset Password" sx={{ opacity: open ? 1 : 0 }} />
       </ListItemButton>
     </List>
   );

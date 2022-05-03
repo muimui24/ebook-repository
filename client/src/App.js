@@ -28,6 +28,7 @@ import Users from "./users";
 import Print from "./logreport";
 
 import Thumbnail from "./displayEbook";
+import Reset from "./resetPw";
 
 const drawerWidth = 240;
 
@@ -114,7 +115,7 @@ function App() {
   if (user_id === null) {
     return (
       <Router>
-        <Navigate to="/authentication" replace />
+        <Navigate to="/authentication" />
         <Routes>
           <Route path="/addEbook" element={<AddEbook />} />
           <Route path="/user" element={<Users />} />
@@ -130,7 +131,7 @@ function App() {
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar
-          sx={{ backgroundColor: "#3d5afe" }}
+          sx={{ backgroundColor: "#4caf50" }}
           position="fixed"
           open={open}
         >
@@ -155,7 +156,8 @@ function App() {
                 }}
               >
                 <Typography variant="h6" noWrap component="div" m="10px">
-                  ONLINE LIBRARY
+                  <img src="/logoisu.png" height={40} />
+                  E-Book Management Repository of ISU-Roxas
                 </Typography>
                 <AccountMenu />
               </Box>
@@ -197,6 +199,7 @@ function App() {
             <Route path="/" element={<Thumbnail />} />
             <Route path="*" element={<Thumbnail />} />
             <Route path="/print" element={<Print />} />
+            <Route path="/reset" element={<Reset />} />
           </Routes>
         </Box>
       </Box>

@@ -271,6 +271,27 @@ app.delete("/api/deleteuser/:userId", (req, res) => {
     }
   });
 });
+// ----------------update password---------------
+app.put("/api/updatepassword", (req, res) => {
+  const updateId = req.body.id;
+  const updatepassword = req.body.NewPassword;
+
+  const sqlUpdate = "UPDATE users SET password = ? WHERE id = ?";
+  db.query(sqlUpdate, [updatepassword, updateId], (err, result) => {
+    if (err) console.log(err);
+    else console.log(result);
+  });
+});
+app.put("/api/resetpassword", (req, res) => {
+  const updateId = req.body.id;
+  const updatepassword = req.body.NewPassword;
+
+  const sqlUpdate = "UPDATE users SET password = ? WHERE id = ?";
+  db.query(sqlUpdate, [updatepassword, updateId], (err, result) => {
+    if (err) console.log(err);
+    else console.log(result);
+  });
+});
 // ------------------------------------------------------------
 
 const storage = multer.diskStorage({
