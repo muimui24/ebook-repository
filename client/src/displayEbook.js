@@ -1,7 +1,5 @@
 import * as React from "react";
-
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-
 import {
   Box,
   Button,
@@ -15,10 +13,6 @@ import {
 } from "@mui/material";
 import { TextField } from "@mui/material";
 import "./display.css";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import { useState } from "react";
 import Axios from "axios";
 
@@ -179,142 +173,6 @@ export default function Thumbnail() {
           ))}
         </Grid>
       </div>
-
-      // <ImageList container="true" display="flex">
-      //   <Grid container>
-      //     <Grid margin={1.5} item xs={10} sm={6} md={3}>
-      //       <ImageListItem>
-      //         {/* <img
-      //   src={`${item.img}?w=248&fit=crop&auto=format`}
-      //   srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-      //   alt={item.title}
-      //   loading="lazy"
-      // /> */}
-      //         <Document
-      //           file={`${
-      //             "//localhost:8000/" + filename
-      //           }?w=248&fit=crop&auto=format`}
-      //           onLoadSuccess={onDocumentLoadSuccess}
-      //         >
-      //           <Page
-      //             height={100}
-      //             pageNumber={pageNumber}
-      //             onClick={() => {
-      //               opener();
-
-      //               setPdfName("//localhost:8000/" + filename);
-      //             }}
-      //           />
-      //         </Document>
-      //         <ImageListItemBar
-      //           title=""
-      //           subtitle={<span>by: ""</span>}
-      //           position="below"
-      //         />
-      //       </ImageListItem>
-      //       <ImageListItem>
-      //         {/* <img
-      //   src={`${item.img}?w=248&fit=crop&auto=format`}
-      //   srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-      //   alt={item.title}
-      //   loading="lazy"
-      // /> */}
-      //         <Document
-      //           file={`${"//localhost:8000/Advances in Human Factors, Business Management, Training and Education_ Proceedings of the AHFE 2016 International Conference on Human Factors, Business Management and Society, July 27-31, 2016, Walt Disney World®, .pdf"}?w=248&fit=crop&auto=format`}
-      //           onLoadSuccess={onDocumentLoadSuccess}
-      //         >
-      //           <Page
-      //             height={100}
-      //             pageNumber={pageNumber}
-      //             onClick={() => {
-      //               opener();
-
-      //               setPdfName(
-      //                 "//localhost:8000/Advances in Human Factors, Business Management, Training and Education_ Proceedings of the AHFE 2016 International Conference on Human Factors, Business Management and Society, July 27-31, 2016, Walt Disney World®, .pdf"
-      //               );
-      //             }}
-      //           />
-      //         </Document>
-      //         <ImageListItemBar
-      //           title=""
-      //           subtitle={<span>by: ""</span>}
-      //           position="below"
-      //         />
-      //       </ImageListItem>
-      //     </Grid>
-      //   </Grid>
-      //   {/* {itemData.map((item) => ( */}
-
-      //   {/* ))} */}
-      // </ImageList>
     );
   }
 }
-
-// <ImageList container display="flex">
-//       <Grid container>
-//         <Grid margin={1.5} item xs={10} sm={6} md={3}>
-//           <ImageListItem>
-//             {/* <img
-//         src={`${item.img}?w=248&fit=crop&auto=format`}
-//         srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-//         alt={item.title}
-//         loading="lazy"
-//       /> */}
-//             <Document
-//               file={`${
-//                 "//localhost:8000/" + filename
-//               }?w=248&fit=crop&auto=format`}
-//               onLoadSuccess={onDocumentLoadSuccess}
-//             >
-//               <Page
-//                 height="150"
-//                 pageNumber={pageNumber}
-//                 onClick={() => {
-//                   opener();
-
-//                   setPdfName("//localhost:8000/" + filename);
-//                 }}
-//               />
-//             </Document>
-//             <ImageListItemBar
-//               title=""
-//               subtitle={<span>by: ""</span>}
-//               position="below"
-//             />
-//           </ImageListItem>
-//           <ImageListItem>
-//             {/* <img
-//         src={`${item.img}?w=248&fit=crop&auto=format`}
-//         srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-//         alt={item.title}
-//         loading="lazy"
-//       /> */}
-//             <Document
-//               file={`${"//localhost:8000/Advances in Human Factors, Business Management, Training and Education_ Proceedings of the AHFE 2016 International Conference on Human Factors, Business Management and Society, July 27-31, 2016, Walt Disney World®, .pdf"}?w=248&fit=crop&auto=format`}
-//               onLoadSuccess={onDocumentLoadSuccess}
-//             >
-//               <Page
-//                 height="150"
-//                 pageNumber={pageNumber}
-//                 onClick={() => {
-//                   opener();
-
-//                   setPdfName(
-//                     "//localhost:8000/Advances in Human Factors, Business Management, Training and Education_ Proceedings of the AHFE 2016 International Conference on Human Factors, Business Management and Society, July 27-31, 2016, Walt Disney World®, .pdf"
-//                   );
-//                 }}
-//               />
-//             </Document>
-//             <ImageListItemBar
-//               title=""
-//               subtitle={<span>by: ""</span>}
-//               position="below"
-//             />
-//           </ImageListItem>
-//         </Grid>
-//       </Grid>
-//       {/* {itemData.map((item) => ( */}
-
-//       {/* ))} */}
-//     </ImageList>
