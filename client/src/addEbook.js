@@ -70,6 +70,12 @@ function AddEbook() {
   const [author, setAuthor] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
+  const [subject, setSubject] = useState("");
+  const [year_pub, setYear_pub] = useState("");
+  const [pub_place, setPub_Place] = useState("");
+  const [accession_no, setAccession_no] = useState("");
+  const [call_no, setCall_no] = useState("");
+
   var fileName = "";
   var thumbnailName = "";
 
@@ -81,6 +87,11 @@ function AddEbook() {
       ebookDescription: description,
       ebookFileName: fileName,
       ebookThumbnail: thumbnailName,
+      ebookSubject: subject,
+      year_published: year_pub,
+      place_publication: pub_place,
+      accession: accession_no,
+      call_number: call_no,
     }).then((result) => {
       alert("Successfully Uploaded");
       handleClose();
@@ -157,6 +168,11 @@ function AddEbook() {
       updateAuthor: "",
       updateCategory: "",
       updateDescription: "",
+      updateSubject: "",
+      updateYearPublished: "",
+      placePublished: "",
+      updateCallNo: "",
+      updateAccessionNo: "",
     },
   ]);
 
@@ -167,6 +183,11 @@ function AddEbook() {
       updateAuthor: book.author,
       updateCategory: book.category,
       updateDescription: book.description,
+      updateSubject: book.subject,
+      updateYearPublished: book.year_published,
+      placePublished: book.publication_place,
+      updateCallNo: book.call_no,
+      updateAccessionNo: book.accession_no,
     });
   };
   const updateBook = () => {
@@ -176,6 +197,11 @@ function AddEbook() {
       ebookNewAuthor: form.updateAuthor,
       ebookNewCategory: form.updateCategory,
       ebookNewDescription: form.updateDescription,
+      ebookNewSubject: form.updateSubject,
+      updateYearPublished: form.updateYearPublished,
+      placePublished: form.placePublished,
+      updateCallNo: form.updateCallNo,
+      updateAccessionNo: form.updateAccessionNo,
     });
     handleClickCloseUpdate();
     alert("Successfully updated");
@@ -233,6 +259,56 @@ function AddEbook() {
             fullWidth
             onChange={(e) => {
               setCategory(e.target.value);
+            }}
+          />
+          <TextField
+            margin="dense"
+            id="subject"
+            label="Subject"
+            type="text"
+            fullWidth
+            onChange={(e) => {
+              setSubject(e.target.value);
+            }}
+          />
+          <TextField
+            margin="dense"
+            id="year published"
+            label="Year Published"
+            type="text"
+            fullWidth
+            onChange={(e) => {
+              setYear_pub(e.target.value);
+            }}
+          />
+          <TextField
+            margin="dense"
+            id="place"
+            label="Place of Publication"
+            type="text"
+            fullWidth
+            onChange={(e) => {
+              setPub_Place(e.target.value);
+            }}
+          />
+          <TextField
+            margin="dense"
+            id="call"
+            label="Call No."
+            type="text"
+            fullWidth
+            onChange={(e) => {
+              setCall_no(e.target.value);
+            }}
+          />
+          <TextField
+            margin="dense"
+            id="accession"
+            label="Accession No."
+            type="text"
+            fullWidth
+            onChange={(e) => {
+              setAccession_no(e.target.value);
             }}
           />
           <TextField
@@ -311,6 +387,60 @@ function AddEbook() {
           />
           <TextField
             margin="dense"
+            id="newSubject"
+            label="Subject"
+            type="text"
+            value={form.updateSubject}
+            fullWidth
+            onChange={(e) =>
+              setForm({ ...form, updateSubject: e.target.value })
+            }
+          />
+
+          <TextField
+            margin="dense"
+            id="year"
+            label="Year Published"
+            type="text"
+            value={form.updateYearPublished}
+            fullWidth
+            onChange={(e) =>
+              setForm({ ...form, updateYearPublished: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
+            id="place"
+            label="Place of Publication"
+            type="text"
+            value={form.placePublished}
+            fullWidth
+            onChange={(e) =>
+              setForm({ ...form, placePublished: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
+            id="call"
+            label="Call No."
+            type="text"
+            value={form.updateCallNo}
+            fullWidth
+            onChange={(e) => setForm({ ...form, updateCallNo: e.target.value })}
+          />
+          <TextField
+            margin="dense"
+            id="accession"
+            label="Accession No."
+            type="text"
+            value={form.updateAccessionNo}
+            fullWidth
+            onChange={(e) =>
+              setForm({ ...form, updateAccessionNo: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
             id="newdescription"
             label="Description"
             type="text"
@@ -362,6 +492,10 @@ function AddEbook() {
               <StyledTableCell>Title</StyledTableCell>
               <StyledTableCell>Author</StyledTableCell>
               <StyledTableCell>Category</StyledTableCell>
+              <StyledTableCell>Year Published</StyledTableCell>
+              <StyledTableCell>Publication Place</StyledTableCell>
+              <StyledTableCell>Call No.</StyledTableCell>
+              <StyledTableCell>Accession No.</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -391,6 +525,16 @@ function AddEbook() {
                 </StyledTableCell>
                 <StyledTableCell align="left">{val.author}</StyledTableCell>
                 <StyledTableCell align="left">{val.category}</StyledTableCell>
+                <StyledTableCell align="left">
+                  {val.year_published}
+                </StyledTableCell>
+                <StyledTableCell align="left">
+                  {val.publication_place}
+                </StyledTableCell>
+                <StyledTableCell align="left">{val.call_no}</StyledTableCell>
+                <StyledTableCell align="left">
+                  {val.accession_no}
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

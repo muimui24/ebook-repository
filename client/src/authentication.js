@@ -102,13 +102,6 @@ function Login() {
     });
     console.log(name);
   };
-  useEffect(() => {
-    // Axios.get("http://localhost:8000/login").then((response) => {
-    //   if (response.data.loggedIn == true) {
-    //     console.log(response);
-    //     setStatus(response.data.user[0].id);
-    // });
-  });
 
   // if (user_id !== undefined) {
   //   return navigate("/");

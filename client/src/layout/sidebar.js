@@ -27,6 +27,7 @@ export default function MenuList(open) {
         <ListItemButton
           onClick={() => {
             navigate("/");
+            window.location.reload(false);
           }}
           key="home"
           sx={{

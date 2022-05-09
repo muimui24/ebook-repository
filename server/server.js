@@ -47,9 +47,14 @@ app.post("/api/insert", (req, res) => {
   const ebookDescription = req.body.ebookDescription;
   const ebookFileName = req.body.ebookFileName;
   const ebookThumbnail = req.body.ebookThumbnail;
+  const ebookSubject = req.body.ebookSubject;
+  const year_published = req.body.year_published;
+  const place_publication = req.body.place_publication;
+  const accession = req.body.accession;
+  const call_number = req.body.call_number;
 
   const sqlInsert =
-    "INSERT INTO ebooks (title, author, category, file_name, description, thumbnail) VALUES (?,?,?,?,?,?);";
+    "INSERT INTO ebooks (title, author, category, file_name, description, thumbnail, subject, year_published, publication_place, call_no, accession_no) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
   db.query(
     sqlInsert,
     [
@@ -59,6 +64,11 @@ app.post("/api/insert", (req, res) => {
       ebookFileName,
       ebookDescription,
       ebookThumbnail,
+      ebookSubject,
+      year_published,
+      place_publication,
+      call_number,
+      accession,
     ],
     (err, result) => {
       res.send(result);
@@ -98,12 +108,29 @@ app.put("/api/update", (req, res) => {
   const updateAuthor = req.body.ebookNewAuthor;
   const updateCategory = req.body.ebookNewCategory;
   const updateDescription = req.body.ebookNewDescription;
+  const updateSubject = req.body.ebookNewSubject;
+  const updateYear = req.body.updateYearPublished;
+  const updatePlace = req.body.placePublished;
+  const updateCallNo = req.body.updateCallNo;
+  const updateAccession = req.body.updateAccessionNo;
 
   const sqlUpdate =
-    "UPDATE ebooks SET title = ?, author = ?, category = ?, description = ? WHERE id = ?";
+    "UPDATE ebooks SET title = ?, author = ?, category = ?, description = ?, subject = ?, year_published = ?, publication_place = ?, call_no = ?, accession_no = ? WHERE id = ?";
   db.query(
     sqlUpdate,
-    [updateTitle, updateAuthor, updateCategory, updateDescription, updateId],
+    [
+      updateTitle,
+      updateAuthor,
+      updateCategory,
+      updateDescription,
+
+      updateSubject,
+      updateYear,
+      updatePlace,
+      updateCallNo,
+      updateAccession,
+      updateId,
+    ],
     (err, result) => {
       if (err) console.log(err);
       else console.log(result);
