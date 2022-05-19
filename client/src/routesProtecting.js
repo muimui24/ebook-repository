@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import Login from "./authentication";
 
 function ProtectedRoutes({ isAuth: isAuth, component: Component, ...rest }) {
   return (
@@ -11,7 +12,12 @@ function ProtectedRoutes({ isAuth: isAuth, component: Component, ...rest }) {
           return <Component />;
         } else {
           return (
-            <Navigate to={`/authentication/${rest.location.search}`} replace />
+            <Redirect
+              to={{
+                pathname: "/authentication",
+                state: { from: props.location },
+              }}
+            />
           );
         }
       }}

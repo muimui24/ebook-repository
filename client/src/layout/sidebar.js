@@ -9,9 +9,11 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { Route, Redirect } from "react-router-dom";
 
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useHistory } from "react-router-dom";
 
 export default function MenuList(open) {
   // const ses = await sessionInfo();
@@ -19,15 +21,23 @@ export default function MenuList(open) {
   //   // useEffect(() => {
   //   //   ses;
   //   // }, []);
+  const history = useHistory();
+
+  function handleClick() {
+    history.push("/ebooks");
+  }
   const user_type = localStorage.getItem("user_type");
-  let navigate = useNavigate();
-  if (user_type === "admin") {
+  const user_id = localStorage.getItem("user_id");
+  // let navigate = useNavigate();
+  if (user_type === "admin" && user_id !== null) {
     return (
       <List>
         <ListItemButton
           onClick={() => {
-            navigate("/");
-            window.location.reload(false);
+            // navigate("/");
+            history.push("/ebooks");
+
+            localStorage.setItem("opener", false);
           }}
           key="home"
           sx={{
@@ -49,7 +59,8 @@ export default function MenuList(open) {
         </ListItemButton>
         <ListItemButton
           onClick={() => {
-            navigate("/addEbook");
+            // navigate("/addEbook");
+            history.push("/addEbook");
           }}
           key="E-Books"
           sx={{
@@ -74,7 +85,8 @@ export default function MenuList(open) {
         </ListItemButton>
         <ListItemButton
           onClick={() => {
-            navigate("/user");
+            // navigate("/user");
+            history.push("/user");
           }}
           key="Manage Accounts"
           sx={{
@@ -96,7 +108,8 @@ export default function MenuList(open) {
         </ListItemButton>
         <ListItemButton
           onClick={() => {
-            navigate("/print");
+            // navigate("/print");
+            history.push("/print");
           }}
           key="Print Report"
           sx={{
@@ -118,14 +131,43 @@ export default function MenuList(open) {
         </ListItemButton>
       </List>
     );
+  } else if (user_id === null) {
+    return (
+      <List>
+        <ListItemButton
+          onClick={() => {
+            // navigate("/");
+            history.push("/ebooks");
+            window.location.reload(false);
+          }}
+          key="ebooks"
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+            }}
+          >
+            <HomeRoundedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+        </ListItemButton>
+      </List>
+    );
   }
   return (
     <List>
       <ListItemButton
         onClick={() => {
-          navigate("/");
+          history.push("/ebooks");
         }}
-        key="home"
+        key="ebooks"
         sx={{
           minHeight: 48,
           justifyContent: open ? "initial" : "center",
@@ -145,9 +187,10 @@ export default function MenuList(open) {
       </ListItemButton>
       <ListItemButton
         onClick={() => {
-          navigate("/reset");
+          // navigate("/reset");
+          history.push("/reset");
         }}
-        key="home"
+        key="reset"
         sx={{
           minHeight: 48,
           justifyContent: open ? "initial" : "center",

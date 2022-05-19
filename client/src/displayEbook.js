@@ -15,6 +15,7 @@ import { TextField } from "@mui/material";
 import "./display.css";
 import { useState } from "react";
 import Axios from "axios";
+import { VALID_LOADERS } from "next/dist/server/image-config";
 
 export default function Thumbnail() {
   const [numPages, setNumPages] = React.useState(null);
@@ -47,6 +48,10 @@ export default function Thumbnail() {
     setViewer(true);
   }
   function close() {
+    setViewer(false);
+  }
+  var closing = localStorage.getItem("opener");
+  if (closing === false) {
     setViewer(false);
   }
   const [searchBy, setAge] = React.useState("");
@@ -98,14 +103,20 @@ export default function Thumbnail() {
             </Button>
           )}
         </Grid>
-        <header className="App-header">
+        <header
+          className="App-header"
+          sx={{
+            justifyContent: "space-between",
+          }}
+        >
           <Box
             sx={{
               justifyContent: "space-between",
             }}
           >
+            {" "}
             <Document file={pdfName} onLoadSuccess={onDocumentLoadSuccess}>
-              <Page height={300} width={650} pageNumber={pageNumber} />
+              <Page height={600} pageNumber={pageNumber} />
             </Document>
           </Box>
           <p>
@@ -129,9 +140,14 @@ export default function Thumbnail() {
         </Box>
         <Grid container>
           {filtered.map((val) => (
-            <Grid margin={1.5} item xs={9} sm={6} md={2} key={val.id}>
-              <Card margin={1.5} sx={{ maxHeight: "100%" }}>
-                <CardActionArea>
+            <Grid margin={3} item xs={10} sm={6} md={2.5} key={val.id}>
+              <Card margin={1.5} sx={{ height: "550px" }}>
+                <CardActionArea
+                  onClick={() => {
+                    opener();
+                    setPdfName("//localhost:8000/" + val.file_name);
+                  }}
+                >
                   <CardMedia
                     component="img"
                     height="140"
@@ -145,10 +161,23 @@ export default function Thumbnail() {
 
                     <Box display="">
                       <Typography variant="body2" color="text.secondary">
-                        by: {val.author}
+                        By: {val.author}
                       </Typography>
+
                       <Typography variant="body2" color="text.secondary">
                         Category: {val.category}
+                        <br />
+                        Year Published:{val.year_published}
+                        <br />
+                        Place of Publication:{val.publication_place}
+                        <br />
+                        Suubject:{val.subject}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Accesion #: {val.accession_no}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Call #:{val.call_no}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {val.description}
@@ -156,18 +185,6 @@ export default function Thumbnail() {
                     </Box>
                   </CardContent>
                 </CardActionArea>
-                <CardActions>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => {
-                      opener();
-                      setPdfName("//localhost:8000/" + val.file_name);
-                    }}
-                  >
-                    Read
-                  </Button>
-                </CardActions>
               </Card>
             </Grid>
           ))}

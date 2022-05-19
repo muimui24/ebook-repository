@@ -11,6 +11,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Axios from "axios";
+import { BrowserRouter as Router, Route, Navigate } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import AddEbook from "./addEbook";
 
 const theme = createTheme();
 function Login() {
@@ -36,7 +39,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [loginStatus, setStatus] = useState("");
 
-  async function refreshPage() {
+  function refreshPage() {
     window.location.reload(false);
   }
 
@@ -50,6 +53,7 @@ function Login() {
       .then((response) => {
         if (response.data.message !== "Incorrect password") {
           console.log(response);
+
           localStorage.setItem("user_id", response.data[0].user_id);
           localStorage.setItem("id", response.data[0].id);
           localStorage.setItem("isLogIn", true);
@@ -102,68 +106,71 @@ function Login() {
     });
     console.log(name);
   };
+  const user_id = localStorage.getItem("user_id");
+  if (user_id) {
+    return (
+      <Route exact path="/authentication">
+        <Redirect to="/ebooks" />
+      </Route>
+    );
+  } else
+    return (
+      <Router>
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography component="h1" variant="h4">
+                <img src="/logoisu.png" height={60} /> ISU-R E-Library
+              </Typography>
 
-  // if (user_id !== undefined) {
-  //   return navigate("/");
-  // }
-  return (
-    // <Router>
+              <Typography component="h1" variant="h5">
+                Log In
+              </Typography>
 
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h4">
-            <img src="/logoisu.png" height={60} /> ISU-R E-Library
-          </Typography>
-
-          <Typography component="h1" variant="h5">
-            Log In
-          </Typography>
-
-          <Typography component="h1" variant="h6" color="red">
-            {loginStatus}
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            // onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Id"
-                  name="email"
-                  onChange={(e) => {
-                    setUserId(e.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                />
-              </Grid>
-              {/* <Grid item xs={12}>
+              <Typography component="h1" variant="h6" color="red">
+                {loginStatus}
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                // onSubmit={handleSubmit}
+                sx={{ mt: 3 }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      label="Id"
+                      name="email"
+                      onChange={(e) => {
+                        setUserId(e.target.value);
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
+                    />
+                  </Grid>
+                  {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Checkbox value="allowExtraEmails" color="primary" />
@@ -171,38 +178,26 @@ function Login() {
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid> */}
-            </Grid>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={(e) => {
-                login();
-              }}
-            >
-              LOG IN
-            </Button>
+                </Grid>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={(e) => {
+                    login();
+                  }}
+                >
+                  LOG IN
+                </Button>
 
-            <Grid container justifyContent="flex-end"></Grid>
-          </Box>
-        </Box>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
-      </Container>
-    </ThemeProvider>
-    /* <Routes>
-        <Route
-          {...rest}
-          element={
-            user_id !== undefined ? (
-              element
-            ) : (
-              <Navigate to="/protected" replace />
-            )
-          }
-        />
-      </Routes>
-    </Router> */
-  );
+                <Grid container justifyContent="flex-end"></Grid>
+              </Box>
+            </Box>
+            {/* <Copyright sx={{ mt: 5 }} /> */}
+          </Container>
+        </ThemeProvider>
+      </Router>
+    );
 }
 
 export default Login;
