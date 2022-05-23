@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const mysql = require("mysql");
 const app = express();
+const bcrypt = require("bcrypt");
 
 const db = mysql.createPool({
   host: "localhost",
@@ -13,10 +14,9 @@ const db = mysql.createPool({
   password: "password",
   database: "ebook_repository",
 });
-
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "http://192.168.1.58:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -142,11 +142,21 @@ app.put("/api/update", (req, res) => {
 app.post("/login", (req, res) => {
   const userId = req.body.userId;
   const password = req.body.password;
+  // const user = "SELECT * FROM users WHERE user_id =" + userId;
+  // const dbpw = user.password;
 
   db.query(
     "SELECT * FROM users WHERE user_id =? AND password =?",
     [userId, password],
     (err, result) => {
+      // bcrypt.compare(password, dbpw).then((match) => {
+      //   if (!match) {
+      //     res.send({ message: "Incorrect password" });
+      //   } else {
+      //     req.session.user = result;
+      //   }
+      // });
+
       if (err) {
         res.send({ message: "error" });
       }
@@ -183,23 +193,26 @@ app.post("/api/insertuser", (req, res) => {
 
   const sqlInsert =
     "INSERT INTO users (user_id,password, first_name, middle_name, last_name, user_type, department, religion, gender) VALUES (?,?,?,?,?,?,?,?,?);";
-  db.query(
-    sqlInsert,
-    [
-      userId,
-      password,
-      firstName,
-      middleName,
-      lastName,
-      userType,
-      department,
-      religion,
-      gender,
-    ],
-    (err, result) => {
-      res.send(result);
-    }
-  );
+
+  bcrypt.hash(password, 10).then((hash) => {
+    db.query(
+      sqlInsert,
+      [
+        userId,
+        hash,
+        firstName,
+        middleName,
+        lastName,
+        userType,
+        department,
+        religion,
+        gender,
+      ],
+      (err, result) => {
+        res.send(result);
+      }
+    );
+  });
 });
 // -----------log user------------------------------------------
 app.post("/api/logreport", (req, res) => {
@@ -210,6 +223,7 @@ app.post("/api/logreport", (req, res) => {
   const logDate = new Date(new Date().setHours(0, 0, 0, 0)).toDateString();
   const sqlInsert =
     "INSERT INTO login_reports (user_id,user_name,date, user_type, user_department) VALUES (?,?,?,?,?);";
+
   db.query(
     sqlInsert,
     [logInId, logInName, logDate, logInType, logInDepartment],

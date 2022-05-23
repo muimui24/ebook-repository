@@ -26,7 +26,7 @@ const Reset = () => {
   console.log(form);
 
   const updatepassword = () => {
-    Axios.put("http://localhost:8000/api/updatepassword", {
+    Axios.put("http://192.168.1.58:8000/api/updatepassword", {
       id: user_id,
       NewPassword: form,
     });
@@ -41,8 +41,27 @@ const Reset = () => {
         <DialogContent>
           <TextField
             margin="dense"
+            id="oldpassword"
+            label="Old Password"
+            type="text"
+            value={form}
+            fullWidth
+            onChange={(e) => setForm(e.target.value)}
+          />
+
+          <TextField
+            margin="dense"
             id="newpassword"
             label="Input New Password"
+            type="text"
+            value={form}
+            fullWidth
+            onChange={(e) => setForm(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="oldpassword"
+            label="Confirm Password"
             type="text"
             value={form}
             fullWidth
@@ -73,7 +92,7 @@ const Reset = () => {
             User Type:{localStorage.getItem("user_type")}
             <br />
             <br />
-            Department: {localStorage.getItem("user_dep")} <br />
+            Course: {localStorage.getItem("user_dep")} <br />
           </Typography>
           <Button
             variant="outlined"

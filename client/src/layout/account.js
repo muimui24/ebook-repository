@@ -10,7 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 
 import Logout from "@mui/icons-material/Logout";
-import LogoutIcon from "@mui/icons-material/Logout";
+
 import PersonIcon from "@mui/icons-material/Person";
 
 export default function AccountMenu() {
@@ -23,7 +23,6 @@ export default function AccountMenu() {
     setAnchorEl(null);
   };
 
-  const user_type = localStorage.getItem("user_type");
   const user_id = localStorage.getItem("user_id");
 
   function logout() {

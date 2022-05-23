@@ -35,7 +35,7 @@ const Print = () => {
   const [userList, setUserList] = useState([]);
 
   const userLog = () => {
-    Axios.post("http://localhost:8000/api/userlog", {
+    Axios.post("http://192.168.1.58:8000/api/userlog", {
       dateLog: value.toDateString(),
     }).then((response) => {
       if (response.data.message === "failed") {
@@ -57,15 +57,13 @@ const Print = () => {
     });
   };
   // ----------------get log--------------------------
-  var Title = "ISU-R E-LIBRARY";
+
   var blank = "   ";
   var num = 0;
   const [value, setValue] = React.useState(
     new Date(new Date().setHours(0, 0, 0, 0))
   );
-  const [test, setTest] = React.useState(
-    new Date(new Date().setHours(0, 0, 0, 0)).toDateString()
-  );
+
   // if (value === test) {
   //   console.log(test);
   // } else {

@@ -1,12 +1,10 @@
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -14,18 +12,17 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { BrowserRouter as Router, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import MenuList from "./layout/sidebar";
 import AccountMenu from "./layout/account";
 import AddEbook from "./addEbook";
 import Login from "./authentication";
-import { Routes } from "react-router";
+
 import Users from "./users";
 import Print from "./logreport";
 import Thumbnail from "./displayEbook";
 import Reset from "./resetPw";
 import ProtectedRoutes from "./routesProtecting";
-import { useState } from "react";
 
 const drawerWidth = 240;
 
@@ -200,6 +197,7 @@ function App() {
             <Route path="/authentication">
               <Login />
             </Route>
+
             <ProtectedRoutes
               path="/addEbook"
               component={AddEbook}
@@ -257,8 +255,8 @@ function App() {
                 }}
               >
                 <Typography variant="h6" noWrap component="div" m="0px">
-                  <img src="/logoisu.png" height={30} />
-                  E-Book Repositoryasdfasdfad
+                  <img src="/logoisu.png" height={30} alt="" />
+                  ISU-R E-Book Repository
                 </Typography>
                 <AccountMenu />
               </Box>
@@ -300,7 +298,7 @@ function App() {
           <ProtectedRoutes path="/print" component={Print} isAuth={adminAuth} />
           <ProtectedRoutes path="/user" component={Users} isAuth={adminAuth} />
           <ProtectedRoutes
-            path="/ebooks"
+            path={"/ebooks"}
             component={Thumbnail}
             isAuth={isAuth}
           />

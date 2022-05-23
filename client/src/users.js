@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+
 import DialogTitle from "@mui/material/DialogTitle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,11 +21,10 @@ import Axios from "axios";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import SelectInput from "@mui/material/Select/SelectInput";
+
 import { Select } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import Viewer from "./viewpdf";
-import { Box, flexbox } from "@mui/system";
+
+import { Box } from "@mui/system";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -77,7 +76,7 @@ function Users() {
   const [password, setPassword] = useState("isuroxas1978");
 
   const submitUser = () => {
-    Axios.post("http://localhost:8000/api/insertuser", {
+    Axios.post("http://192.168.1.58:8000/api/insertuser", {
       fName: firstName.toLocaleUpperCase(),
       mName: middleName.toUpperCase(),
       lName: lastName.toLocaleUpperCase(),
@@ -99,13 +98,13 @@ function Users() {
 
   const [userList, setUserList] = useState([]);
   useState(() => {
-    Axios.get("http://localhost:8000/api/getuser").then((response) => {
+    Axios.get("http://192.168.1.58:8000/api/getuser").then((response) => {
       setUserList(response.data);
     });
   }, []);
   // ------------delete book from data base----------------------
   const deleteUser = (userId) => {
-    Axios.delete(`http://localhost:8000/api/deleteuser/${userId}`).then(
+    Axios.delete(`http://192.168.1.58:8000/api/deleteuser/${userId}`).then(
       (response) => {
         alert("Successfully Deleted");
         window.location.reload(false);
@@ -143,7 +142,7 @@ function Users() {
     });
   };
   const updateUser = () => {
-    Axios.put("http://localhost:8000/api/updateuser", {
+    Axios.put("http://192.168.1.58:8000/api/updateuser", {
       userNewId: form.updateId,
       userNewFName: form.updateFName,
       userNewMName: form.updateMName,
@@ -168,7 +167,7 @@ function Users() {
   const closeR = () => {
     setOpenReset(false);
   };
-  const [defaultPasword, setDefaultPassword] = useState("isuroxas1978");
+  const [defaultPasword] = useState("isuroxas1978");
   var user_id;
   const getid = (id) => {
     user_id = id;
@@ -176,7 +175,7 @@ function Users() {
   };
 
   const updatepassword = () => {
-    Axios.put("http://localhost:8000/api/resetpassword", {
+    Axios.put("http://192.168.1.58:8000/api/resetpassword", {
       id: user_id,
       NewPassword: defaultPasword,
     });
@@ -344,7 +343,7 @@ function Users() {
             margin="dense"
             id="pw"
             label="Password"
-            type="text"
+            type="password"
             value={password}
             fullWidth
             onChange={(e) => {
@@ -501,7 +500,7 @@ function Users() {
             margin="dense"
             id="pw"
             label="Password"
-            type="text"
+            type="password"
             value={form.updatePassword}
             fullWidth
             onChange={(e) =>
@@ -551,7 +550,7 @@ function Users() {
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell>Gender</StyledTableCell>
               <StyledTableCell>Religion</StyledTableCell>
-              <StyledTableCell>Department</StyledTableCell>
+              <StyledTableCell>Course</StyledTableCell>
               <StyledTableCell>Type of User</StyledTableCell>
             </TableRow>
           </TableHead>

@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
   Grid,
@@ -15,7 +14,19 @@ import { TextField } from "@mui/material";
 import "./display.css";
 import { useState } from "react";
 import Axios from "axios";
-import { VALID_LOADERS } from "next/dist/server/image-config";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
+// import { styled } from "@mui/material/styles";
+
+// const Root = styled("div")(({ theme }) => ({
+//   padding: theme.spacing(1),
+//   [theme.breakpoints.down("md")]: {
+//     width: 1,
+//   },
+// }));
 
 export default function Thumbnail() {
   const [numPages, setNumPages] = React.useState(null);
@@ -23,8 +34,17 @@ export default function Thumbnail() {
   const [viewer, setViewer] = React.useState(false);
   const [pdfName, setPdfName] = React.useState("");
   const [ebookList, setEbookList] = React.useState([]);
+  const [page, setPage] = React.useState(700);
+
+  const handleChange = (event) => {
+    setPage(event.target.value);
+  };
+  const jumpPage = (event) => {
+    setPageNumber(parseInt(event.target.value));
+  };
+
   React.useState(() => {
-    Axios.get("http://localhost:8000/api/read").then((response) => {
+    Axios.get("http://192.168.1.58:8000/api/read").then((response) => {
       setEbookList(response.data);
     });
   }, []);
@@ -36,6 +56,9 @@ export default function Thumbnail() {
 
   function changePage(offSet) {
     setPageNumber((prevPageNumber) => prevPageNumber + offSet);
+  }
+  function changePageto(page) {
+    setPageNumber(page);
   }
   function changePageBack() {
     changePage(-1);
@@ -54,15 +77,12 @@ export default function Thumbnail() {
   if (closing === false) {
     setViewer(false);
   }
-  const [searchBy, setAge] = React.useState("");
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
   const [searchInput, setSearchInput] = useState("");
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
   };
+
   const filtered = ebookList.filter((item) => {
     return (
       item.category.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -76,6 +96,7 @@ export default function Thumbnail() {
         className="pdf"
         onContextMenu={(e) => e.preventDefault()}
         display="flex"
+        align="center"
       >
         <Grid
           container
@@ -89,14 +110,45 @@ export default function Thumbnail() {
               Previous Page
             </Button>
           )}
-          <Button
+          <TextField
+            sx={{ m: 0.1, maxWidth: 90, minHeight: 50 }}
+            placeholder="Search..."
+            label="Jump to..."
+            type="Number"
+            value={pageNumber}
+            onChange={jumpPage}
+          />{" "}
+          <p>
+            Page {pageNumber} of {numPages}
+          </p>
+          <FormControl sx={{ m: 0.1, minWidth: 110, minHeight: 50 }}>
+            <InputLabel id="demo-simple-select-label">Zoom</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={page}
+              label="Select Page"
+              onChange={handleChange}
+            >
+              <MenuItem value={400}>10%</MenuItem>
+              <MenuItem value={500}>25%</MenuItem>
+              <MenuItem value={600}>50%</MenuItem>
+              <MenuItem value={650}>75%</MenuItem>
+              <MenuItem value={700}>100%</MenuItem>
+              <MenuItem value={1000}>125%</MenuItem>
+              <MenuItem value={1100}>150%</MenuItem>
+              <MenuItem value={1200}>175%</MenuItem>
+              <MenuItem value={1300}>200%</MenuItem>
+            </Select>
+          </FormControl>
+          {/* <Button
             variant="contained"
             onClick={() => {
               close();
             }}
           >
             exit
-          </Button>{" "}
+          </Button> */}
           {pageNumber < numPages && (
             <Button variant="contained" onClick={changePageNext}>
               next Page
@@ -113,15 +165,13 @@ export default function Thumbnail() {
             sx={{
               justifyContent: "space-between",
             }}
+            bgcolor="black"
           >
             {" "}
             <Document file={pdfName} onLoadSuccess={onDocumentLoadSuccess}>
-              <Page height={600} pageNumber={pageNumber} />
+              <Page width={page} pageNumber={pageNumber} />
             </Document>
           </Box>
-          <p>
-            Page {pageNumber} of {numPages}
-          </p>{" "}
         </header>
       </div>
     );
@@ -135,7 +185,7 @@ export default function Thumbnail() {
             placeholder="Search..."
             label="Search"
             type="text"
-            onChange={(e) => searchItems(e.target.value)}
+            onChange={(e) => e.target.value}
           />
         </Box>
         <Grid container>
@@ -145,13 +195,13 @@ export default function Thumbnail() {
                 <CardActionArea
                   onClick={() => {
                     opener();
-                    setPdfName("//localhost:8000/" + val.file_name);
+                    setPdfName("http://192.168.1.58:8000/" + val.file_name);
                   }}
                 >
                   <CardMedia
                     component="img"
                     height="140"
-                    image={"http://localhost:8000/" + val.thumbnail}
+                    image={"http://192.168.1.58:8000/" + val.thumbnail}
                     alt="green iguana"
                   />
                   <CardContent>

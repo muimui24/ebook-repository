@@ -9,7 +9,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { Route, Redirect } from "react-router-dom";
 
 import * as React from "react";
 
@@ -23,9 +22,9 @@ export default function MenuList(open) {
   //   // }, []);
   const history = useHistory();
 
-  function handleClick() {
-    history.push("/ebooks");
-  }
+  // function handleClick() {
+  //   history.push("/ebooks");
+  // }
   const user_type = localStorage.getItem("user_type");
   const user_id = localStorage.getItem("user_id");
   // let navigate = useNavigate();
@@ -104,7 +103,7 @@ export default function MenuList(open) {
           >
             <ManageAccountsIcon />
           </ListItemIcon>
-          <ListItemText primary="Print Report" sx={{ opacity: open ? 1 : 0 }} />
+          <ListItemText primary="Manage Users" sx={{ opacity: open ? 1 : 0 }} />
         </ListItemButton>
         <ListItemButton
           onClick={() => {

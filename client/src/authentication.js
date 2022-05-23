@@ -1,19 +1,18 @@
-import { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
+import { useState } from "react";
+
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Axios from "axios";
-import { BrowserRouter as Router, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import AddEbook from "./addEbook";
 
 const theme = createTheme();
 function Login() {
@@ -46,14 +45,12 @@ function Login() {
   Axios.defaults.withCredentials = true;
 
   const login = () => {
-    Axios.post("http://localhost:8000/login", {
+    Axios.post("http://192.168.1.58:8000/login", {
       userId: userId,
       password: password,
     })
       .then((response) => {
         if (response.data.message !== "Incorrect password") {
-          console.log(response);
-
           localStorage.setItem("user_id", response.data[0].user_id);
           localStorage.setItem("id", response.data[0].id);
           localStorage.setItem("isLogIn", true);
@@ -98,7 +95,7 @@ function Login() {
   var type = "";
 
   const submitlog = () => {
-    Axios.post("http://localhost:8000/api/logreport", {
+    Axios.post("http://192.168.1.58:8000/api/logreport", {
       logInId: id,
       logInName: name,
       logInDepartment: department,
@@ -119,6 +116,7 @@ function Login() {
         <ThemeProvider theme={theme}>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
+
             <Box
               sx={{
                 marginTop: 8,
@@ -128,13 +126,15 @@ function Login() {
               }}
             >
               <Typography component="h1" variant="h4">
-                <img src="/logoisu.png" height={60} /> ISU-R E-Library
+                <img src="/logoisu.png" height={60} alt="" />
+              </Typography>
+              <Typography align="center" component="h3" variant="h4">
+                ISU-R <br /> E-Book Repository
               </Typography>
 
               <Typography component="h1" variant="h5">
                 Log In
               </Typography>
-
               <Typography component="h1" variant="h6" color="red">
                 {loginStatus}
               </Typography>
