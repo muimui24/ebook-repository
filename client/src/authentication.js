@@ -50,7 +50,11 @@ function Login() {
       password: password,
     })
       .then((response) => {
-        if (response.data.message !== "Incorrect password") {
+        if (
+          response.data.message !== "Incorrect password" &&
+          response.data.message !== "User not exist"
+        ) {
+          console.log(response.data.message);
           localStorage.setItem("user_id", response.data[0].user_id);
           localStorage.setItem("id", response.data[0].id);
           localStorage.setItem("isLogIn", true);
@@ -77,8 +81,10 @@ function Login() {
           submitlog();
           setStatus("");
           refreshPage();
+        } else if (response.data.message === "User not exist") {
+          setStatus("User does not exist");
         } else {
-          setStatus("Incorrect ID/Password");
+          setStatus("Incorrect Password");
         }
       })
       .then((response) => {});

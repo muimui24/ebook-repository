@@ -11,6 +11,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import Axios from "axios";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const Reset = () => {
   const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -22,18 +23,49 @@ const Reset = () => {
     setOpenUpdate(false);
   };
   const user_id = localStorage.getItem("id");
-  const [form, setForm] = React.useState("");
-  console.log(form);
+  const [newPassword1, setnewPassword1] = React.useState("");
+  const [newPassword2, setnewPassword2] = React.useState("");
+  const [oldPassword, setOldPassword] = React.useState("");
+  const id = localStorage.getItem("user_id");
 
-  const updatepassword = () => {
+  const inputupdated = () => {
     Axios.put("http://192.168.1.58:8000/api/updatepassword", {
       id: user_id,
-      NewPassword: form,
+      NewPassword: newPassword2,
     });
     handleClickCloseUpdate();
     alert("Successfully updated");
     window.location.reload(false);
   };
+
+  const updatepassword = () => {
+    Axios.post("http://192.168.1.58:8000/api/changepassword", {
+      userId: id,
+      password: oldPassword,
+    }).then((response) => {
+      if (
+        response.data.message !== "Incorrect password" &&
+        response.data.message !== "User not exist" &&
+        newPassword1 === newPassword2
+      ) {
+        inputupdated();
+      } else {
+      }
+    });
+
+    // if (newPassword1 === newPassword2) {
+    //   Axios.put("http://192.168.1.58:8000/api/updatepassword", {
+    //     id: user_id,
+    //     NewPassword: newPassword2,
+    //   });
+    //   handleClickCloseUpdate();
+    //   alert("Successfully updated");
+    //   window.location.reload(false);
+    // } else {
+    //   alert("password dont match");
+    // }
+  };
+
   return (
     <>
       <Dialog open={openUpdate}>
@@ -44,9 +76,8 @@ const Reset = () => {
             id="oldpassword"
             label="Old Password"
             type="text"
-            value={form}
             fullWidth
-            onChange={(e) => setForm(e.target.value)}
+            onChange={(e) => setOldPassword(e.target.value)}
           />
 
           <TextField
@@ -54,18 +85,18 @@ const Reset = () => {
             id="newpassword"
             label="Input New Password"
             type="text"
-            value={form}
+            value={newPassword1}
             fullWidth
-            onChange={(e) => setForm(e.target.value)}
+            onChange={(e) => setnewPassword1(e.target.value)}
           />
           <TextField
             margin="dense"
             id="oldpassword"
             label="Confirm Password"
             type="text"
-            value={form}
+            value={newPassword2}
             fullWidth
-            onChange={(e) => setForm(e.target.value)}
+            onChange={(e) => setnewPassword2(e.target.value)}
           />
         </DialogContent>
         <DialogActions>

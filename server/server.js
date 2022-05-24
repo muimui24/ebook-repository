@@ -7,6 +7,7 @@ const session = require("express-session");
 const mysql = require("mysql");
 const app = express();
 const bcrypt = require("bcrypt");
+const { useState } = require("react");
 
 const db = mysql.createPool({
   host: "localhost",
@@ -139,37 +140,30 @@ app.put("/api/update", (req, res) => {
 });
 
 // --------------LOGIN-----------------------------------
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const userId = req.body.userId;
   const password = req.body.password;
-  // const user = "SELECT * FROM users WHERE user_id =" + userId;
-  // const dbpw = user.password;
 
-  db.query(
-    "SELECT * FROM users WHERE user_id =? AND password =?",
-    [userId, password],
-    (err, result) => {
-      // bcrypt.compare(password, dbpw).then((match) => {
-      //   if (!match) {
-      //     res.send({ message: "Incorrect password" });
-      //   } else {
-      //     req.session.user = result;
-      //   }
-      // });
+  // const user = "SELECT * FROM users WHERE user_id =?";
+  var dbpassword = "def";
 
-      if (err) {
-        res.send({ message: "error" });
-      }
+  db.query("SELECT * FROM users WHERE user_id =? ", [userId], (err, result) => {
+    if (err || result.length == 0) {
+      res.send({ message: "User not exist" });
+    } else if (result !== null) {
+      dbpassword = result[0].password;
+      bcrypt.compare(password, dbpassword).then((match) => {
+        console.log(result);
+        if (!match) {
+          res.send({ message: "Incorrect password" });
+        } else {
+          req.session.user = result;
 
-      if (result.length > 0) {
-        req.session.user = result;
-
-        res.send(result);
-      } else {
-        res.send({ message: "Incorrect password" });
-      }
+          res.send(result);
+        }
+      });
     }
-  );
+  });
 });
 // --------------get LOGIN session-----------------------------------
 app.get("/login", (req, res) => {
@@ -318,21 +312,69 @@ app.put("/api/updatepassword", (req, res) => {
   const updatepassword = req.body.NewPassword;
 
   const sqlUpdate = "UPDATE users SET password = ? WHERE id = ?";
-  db.query(sqlUpdate, [updatepassword, updateId], (err, result) => {
-    if (err) console.log(err);
-    else console.log(result);
+
+  bcrypt.hash(updatepassword, 10).then((hash) => {
+    db.query(sqlUpdate, [hash, updateId], (err, result) => {
+      if (err) console.log(err);
+      else console.log(result);
+    });
   });
 });
+
 app.put("/api/resetpassword", (req, res) => {
   const updateId = req.body.id;
   const updatepassword = req.body.NewPassword;
 
   const sqlUpdate = "UPDATE users SET password = ? WHERE id = ?";
-  db.query(sqlUpdate, [updatepassword, updateId], (err, result) => {
-    if (err) console.log(err);
-    else console.log(result);
+
+  bcrypt.hash(updatepassword, 10).then((hash) => {
+    db.query(sqlUpdate, [hash, updateId], (err, result) => {
+      console.log(result);
+      if (err) console.log(err);
+      else res.send(result);
+    });
   });
 });
+
+// app.put("/api/resetpassword", (req, res) => {
+//   const updateId = req.body.id;
+//   const updatepassword = req.body.NewPassword;
+
+//   const sqlUpdate = "UPDATE users SET password = ? WHERE id = ?";
+//   db.query(sqlUpdate, [updatepassword, updateId], (err, result) => {
+//     if (err) console.log(err);
+//     else console.log(result);
+//   });
+// });
+
+// -----------------------log in update password-------------------------------------
+
+app.post("/api/changepassword", async (req, res) => {
+  const userId = req.body.userId;
+  const password = req.body.password;
+
+  // const user = "SELECT * FROM users WHERE user_id =?";
+  var dbpassword;
+
+  db.query("SELECT * FROM users WHERE user_id =? ", [userId], (err, result) => {
+    if (err || result.length == 0) {
+      res.send({ message: "User not exist" });
+    } else if (result !== null) {
+      dbpassword = result[0].password;
+      bcrypt.compare(password, dbpassword).then((match) => {
+        console.log(result);
+        if (!match) {
+          res.send({ message: "Incorrect password" });
+        } else {
+          req.session.user = result;
+
+          res.send(result);
+        }
+      });
+    }
+  });
+});
+
 // ------------------------------------------------------------
 
 const storage = multer.diskStorage({

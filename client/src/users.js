@@ -167,7 +167,7 @@ function Users() {
   const closeR = () => {
     setOpenReset(false);
   };
-  const [defaultPasword] = useState("isuroxas1978");
+  const [defaultPassword] = useState("isuroxas178");
   var user_id;
   const getid = (id) => {
     user_id = id;
@@ -177,11 +177,14 @@ function Users() {
   const updatepassword = () => {
     Axios.put("http://192.168.1.58:8000/api/resetpassword", {
       id: user_id,
-      NewPassword: defaultPasword,
+      NewPassword: defaultPassword,
+    }).then((response) => {
+      console.log(response);
     });
     handleClickCloseUpdate();
-    alert("Successfully updated");
-    window.location.reload(false);
+
+    // alert("Successfully updated");
+    // window.location.reload(false);
   };
   // ------------------------resetpasword--------------------------
 
