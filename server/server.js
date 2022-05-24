@@ -11,9 +11,9 @@ const { useState } = require("react");
 
 const db = mysql.createPool({
   host: "localhost",
-  user: "lester",
-  password: "password",
-  database: "ebook_repository",
+  user: "root",
+  password: "my-secret-pw",
+  database: "elib",
 });
 app.use(
   cors({
@@ -143,7 +143,11 @@ app.put("/api/update", (req, res) => {
 app.post("/login", async (req, res) => {
   const userId = req.body.userId;
   const password = req.body.password;
-
+  // req.body.password;
+  //  req.body.password;
+  // bcrypt.hash(password, 10).then((hash) => {
+  //   console.log(hash);
+  // });
   // const user = "SELECT * FROM users WHERE user_id =?";
   var dbpassword = "def";
 
@@ -152,8 +156,8 @@ app.post("/login", async (req, res) => {
       res.send({ message: "User not exist" });
     } else if (result !== null) {
       dbpassword = result[0].password;
-      bcrypt.compare(password, dbpassword).then((match) => {
-        console.log(result);
+
+      bcrypt.compare(password, result[0].password).then((match) => {
         if (!match) {
           res.send({ message: "Incorrect password" });
         } else {
@@ -214,13 +218,14 @@ app.post("/api/logreport", (req, res) => {
   const logInName = req.body.logInName;
   const logInDepartment = req.body.logInDepartment;
   const logInType = req.body.logInType;
-  const logDate = new Date(new Date().setHours(0, 0, 0, 0)).toDateString();
+  const logDate = req.body.date;
+  const logTime = req.body.time;
   const sqlInsert =
-    "INSERT INTO login_reports (user_id,user_name,date, user_type, user_department) VALUES (?,?,?,?,?);";
+    "INSERT INTO login_reports (user_id,user_name,date, user_type, user_department, time) VALUES (?,?,?,?,?, ?);";
 
   db.query(
     sqlInsert,
-    [logInId, logInName, logDate, logInType, logInDepartment],
+    [logInId, logInName, logDate, logInType, logInDepartment, logTime],
     (err, result) => {
       console.log(err);
 
@@ -237,11 +242,9 @@ app.post("/api/userlog", (req, res) => {
     "SELECT * FROM login_reports WHERE date =? AND user_type !='admin' ",
     [date],
     (err, result) => {
-      if (result.length === 0) {
+      if (err || result.length == 0) {
         res.send({ message: "failed" });
-      }
-
-      if (result.length > 0) {
+      } else if (result !== null) {
         res.send(result);
       } else {
         console.log(result.length);
@@ -316,12 +319,13 @@ app.put("/api/updatepassword", (req, res) => {
   bcrypt.hash(updatepassword, 10).then((hash) => {
     db.query(sqlUpdate, [hash, updateId], (err, result) => {
       if (err) console.log(err);
-      else console.log(result);
+      else res.send(result);
+      console.log(result);
     });
   });
 });
 
-app.put("/api/resetpassword", (req, res) => {
+app.put("/api/userreset", (req, res) => {
   const updateId = req.body.id;
   const updatepassword = req.body.NewPassword;
 
@@ -329,7 +333,6 @@ app.put("/api/resetpassword", (req, res) => {
 
   bcrypt.hash(updatepassword, 10).then((hash) => {
     db.query(sqlUpdate, [hash, updateId], (err, result) => {
-      console.log(result);
       if (err) console.log(err);
       else res.send(result);
     });

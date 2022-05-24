@@ -11,7 +11,6 @@ import {
   DialogActions,
 } from "@mui/material";
 import Axios from "axios";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const Reset = () => {
   const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -32,10 +31,13 @@ const Reset = () => {
     Axios.put("http://192.168.1.58:8000/api/updatepassword", {
       id: user_id,
       NewPassword: newPassword2,
+    }).then((response) => {
+      if (response) {
+        handleClickCloseUpdate();
+        alert("Successfully updated");
+        window.location.reload(false);
+      }
     });
-    handleClickCloseUpdate();
-    alert("Successfully updated");
-    window.location.reload(false);
   };
 
   const updatepassword = () => {

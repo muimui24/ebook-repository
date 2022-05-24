@@ -167,24 +167,25 @@ function Users() {
   const closeR = () => {
     setOpenReset(false);
   };
-  const [defaultPassword] = useState("isuroxas178");
-  var user_id;
+
+  var defaultPassword = "isuroxas1978";
+  const [user_id, setUserId] = useState(0);
   const getid = (id) => {
-    user_id = id;
+    setUserId(id);
     console.log(user_id);
   };
 
   const updatepassword = () => {
-    Axios.put("http://192.168.1.58:8000/api/resetpassword", {
+    Axios.put("http://192.168.1.58:8000/api/userreset", {
       id: user_id,
       NewPassword: defaultPassword,
     }).then((response) => {
-      console.log(response);
+      if (response) {
+        alert("Successfully updated");
+        handleClickCloseUpdate();
+        window.location.reload(false);
+      }
     });
-    handleClickCloseUpdate();
-
-    // alert("Successfully updated");
-    // window.location.reload(false);
   };
   // ------------------------resetpasword--------------------------
 
@@ -296,11 +297,12 @@ function Users() {
                 <MenuItem value={"Faculty"}>Faculty</MenuItem>
                 <MenuItem value={"Staff"}>Staff</MenuItem>
                 <MenuItem value={"Visitor"}>Visitor</MenuItem>
+                <MenuItem value={"admin"}>Admin</MenuItem>
               </Select>
             </FormControl>
           </Box>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Department</InputLabel>
+            <InputLabel id="demo-simple-select-label">Course</InputLabel>
 
             <Select
               labelId="demo-simple-select-label"

@@ -50,6 +50,7 @@ function Login() {
       password: password,
     })
       .then((response) => {
+        console.log(response.data.message);
         if (
           response.data.message !== "Incorrect password" &&
           response.data.message !== "User not exist"
@@ -99,6 +100,11 @@ function Login() {
   var name = "";
   var department = "";
   var type = "";
+  var date = new Date(new Date().setHours(0, 0, 0, 0));
+  var today = new Date();
+
+  var curTime =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
   const submitlog = () => {
     Axios.post("http://192.168.1.58:8000/api/logreport", {
@@ -106,8 +112,10 @@ function Login() {
       logInName: name,
       logInDepartment: department,
       logInType: type,
+      date: date,
+      time: curTime,
     });
-    console.log(name);
+    console.log(date);
   };
   const user_id = localStorage.getItem("user_id");
   if (user_id) {

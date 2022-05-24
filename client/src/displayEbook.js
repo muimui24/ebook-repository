@@ -42,7 +42,7 @@ export default function Thumbnail() {
   const jumpPage = (event) => {
     setPageNumber(parseInt(event.target.value));
   };
-
+  const usertype = localStorage.getItem("user_type");
   React.useState(() => {
     Axios.get("http://192.168.1.58:8000/api/read").then((response) => {
       setEbookList(response.data);
@@ -57,9 +57,9 @@ export default function Thumbnail() {
   function changePage(offSet) {
     setPageNumber((prevPageNumber) => prevPageNumber + offSet);
   }
-  function changePageto(page) {
-    setPageNumber(page);
-  }
+  // function changePageto(page) {
+  //   setPageNumber(page);
+  // }
   function changePageBack() {
     changePage(-1);
   }
@@ -67,21 +67,21 @@ export default function Thumbnail() {
     changePage(+1);
   }
 
-  function opener() {
-    setViewer(true);
+  function opener(file) {
+    if (usertype === "admin") {
+      window.location = file;
+    } else setViewer(true);
   }
-  function close() {
-    setViewer(false);
-  }
+
   var closing = localStorage.getItem("opener");
   if (closing === false) {
     setViewer(false);
   }
 
-  const [searchInput, setSearchInput] = useState("");
-  const searchItems = (searchValue) => {
-    setSearchInput(searchValue);
-  };
+  const [searchInput] = useState("");
+  // const searchItems = (searchValue) => {
+  //   setSearchInput(searchValue);
+  // };
 
   const filtered = ebookList.filter((item) => {
     return (
@@ -90,7 +90,7 @@ export default function Thumbnail() {
       item.author.toLowerCase().includes(searchInput.toLowerCase())
     );
   });
-  if (viewer === true) {
+  if (viewer === true && usertype !== "admin") {
     return (
       <div
         className="pdf"
@@ -194,8 +194,9 @@ export default function Thumbnail() {
               <Card margin={1.5} sx={{ height: "550px" }}>
                 <CardActionArea
                   onClick={() => {
-                    opener();
+                    opener("http://192.168.1.58:8000/" + val.file_name);
                     setPdfName("http://192.168.1.58:8000/" + val.file_name);
+                    // history.push("http://192.168.1.58:8000/" + val.file_name);
                   }}
                 >
                   <CardMedia

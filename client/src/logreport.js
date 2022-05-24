@@ -36,7 +36,7 @@ const Print = () => {
 
   const userLog = () => {
     Axios.post("http://192.168.1.58:8000/api/userlog", {
-      dateLog: value.toDateString(),
+      dateLog: value,
     }).then((response) => {
       if (response.data.message === "failed") {
         setUserList([
@@ -73,7 +73,7 @@ const Print = () => {
   const marginRight = "10px";
   const marginBottom = "10px";
   const marginLeft = "10px";
-  console.log(new Date(new Date().setHours(0, 0, 0, 0)).toDateString());
+
   const getPageMargins = () => {
     return `@page { margin: ${marginTop} ${marginRight} ${marginBottom} ${marginLeft} !important; }`;
   };
@@ -141,7 +141,7 @@ const Print = () => {
                           <TableCell></TableCell>
                           <TableCell>Id</TableCell>
                           <TableCell>Name</TableCell>
-                          <TableCell>Department</TableCell>
+                          <TableCell>Course</TableCell>
                           <TableCell>User Type</TableCell>
                           <TableCell>Time Logged in</TableCell>
                         </TableRow>

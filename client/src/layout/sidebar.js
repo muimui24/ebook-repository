@@ -35,6 +35,7 @@ export default function MenuList(open) {
           onClick={() => {
             // navigate("/");
             history.push("/ebooks");
+            window.location.reload(false);
 
             localStorage.setItem("opener", false);
           }}
@@ -165,6 +166,7 @@ export default function MenuList(open) {
       <ListItemButton
         onClick={() => {
           history.push("/ebooks");
+          window.location.reload(false);
         }}
         key="ebooks"
         sx={{
