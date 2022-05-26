@@ -28,7 +28,7 @@ const Reset = () => {
   const id = localStorage.getItem("user_id");
 
   const inputupdated = () => {
-    Axios.put("http://192.168.1.58:8000/api/updatepassword", {
+    Axios.put("http://192.168.1.8:8000/api/updatepassword", {
       id: user_id,
       NewPassword: newPassword2,
     }).then((response) => {
@@ -41,7 +41,7 @@ const Reset = () => {
   };
 
   const updatepassword = () => {
-    Axios.post("http://192.168.1.58:8000/api/changepassword", {
+    Axios.post("http://192.168.1.8:8000/api/changepassword", {
       userId: id,
       password: oldPassword,
     }).then((response) => {

@@ -18,7 +18,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 // import { styled } from "@mui/material/styles";
 
 // const Root = styled("div")(({ theme }) => ({
@@ -35,6 +36,8 @@ export default function Thumbnail() {
   const [pdfName, setPdfName] = React.useState("");
   const [ebookList, setEbookList] = React.useState([]);
   const [page, setPage] = React.useState(700);
+  const hasWindow = typeof window !== "undefined";
+  const width = hasWindow ? window.innerWidth : null;
 
   const handleChange = (event) => {
     setPage(event.target.value);
@@ -44,7 +47,7 @@ export default function Thumbnail() {
   };
   const usertype = localStorage.getItem("user_type");
   React.useState(() => {
-    Axios.get("http://192.168.1.58:8000/api/read").then((response) => {
+    Axios.get("http://192.168.1.8:8000/api/read").then((response) => {
       setEbookList(response.data);
     });
   }, []);
@@ -70,7 +73,11 @@ export default function Thumbnail() {
   function opener(file) {
     if (usertype === "admin") {
       window.location = file;
-    } else setViewer(true);
+    } else if (width <= 400) {
+      setPage(400);
+      setViewer(true);
+    }
+    setViewer(true);
   }
 
   var closing = localStorage.getItem("opener");
@@ -90,7 +97,11 @@ export default function Thumbnail() {
       item.author.toLowerCase().includes(searchInput.toLowerCase())
     );
   });
-  if (viewer === true && usertype !== "admin") {
+  // if (width < 400) {
+  //   setPage();
+  // }
+
+  if (viewer === true && usertype !== "admin" && width > 400) {
     return (
       <div
         className="pdf"
@@ -103,31 +114,44 @@ export default function Thumbnail() {
           align="center"
           sx={{
             justifyContent: "space-between",
+            "& .MuiTextField-root": {
+              m: { xs: 1, md: 2, lg: 2 },
+              width: { xs: "8ch", md: "12ch", lg: "12ch" },
+            },
+            "& .MuiFormControl-root": {
+              m: { xs: 1, md: 2, lg: 2 },
+              width: { xs: "8ch", md: "12ch", lg: "12ch" },
+            },
           }}
         >
           {pageNumber > 1 && (
-            <Button variant="contained" onClick={changePageBack}>
-              Previous Page
+            <Button
+              variant="contained"
+              onClick={changePageBack}
+              sx={{ height: { xs: 25, sm: 30, md: 40, lg: 50 } }}
+            >
+              <ArrowBackIosNewIcon />
             </Button>
           )}
           <TextField
-            sx={{ m: 0.1, maxWidth: 90, minHeight: 50 }}
+            sx={{ size: { xs: "small" } }}
             placeholder="Search..."
             label="Jump to..."
             type="Number"
+            size="small"
             value={pageNumber}
             onChange={jumpPage}
           />{" "}
-          <p>
-            Page {pageNumber} of {numPages}
-          </p>
-          <FormControl sx={{ m: 0.1, minWidth: 110, minHeight: 50 }}>
+          <FormControl
+            sx={{ height: { xs: 25, sm: 30, md: 40, lg: 50 } }}
+            size="small"
+          >
             <InputLabel id="demo-simple-select-label">Zoom</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={page}
-              label="Select Page"
+              label="Zoom"
               onChange={handleChange}
             >
               <MenuItem value={400}>10%</MenuItem>
@@ -150,8 +174,12 @@ export default function Thumbnail() {
             exit
           </Button> */}
           {pageNumber < numPages && (
-            <Button variant="contained" onClick={changePageNext}>
-              next Page
+            <Button
+              variant="contained"
+              onClick={changePageNext}
+              sx={{ height: { xs: 25, sm: 30, md: 40, lg: 50 } }}
+            >
+              <ArrowForwardIosIcon />
             </Button>
           )}
         </Grid>
@@ -167,12 +195,121 @@ export default function Thumbnail() {
             }}
             bgcolor="black"
           >
-            {" "}
             <Document file={pdfName} onLoadSuccess={onDocumentLoadSuccess}>
-              <Page width={page} pageNumber={pageNumber} />
+              <Page height={page} pageNumber={pageNumber} />
             </Document>
-          </Box>
+          </Box>{" "}
+          <p>
+            Page {pageNumber} of {numPages}
+          </p>
         </header>
+        {/* <div>
+          <Document file={pdfName} onLoadSuccess={onDocumentLoadSuccess}>
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page key={`page_${index}`} pageNumber={index} />
+            ))}
+          </Document>
+        </div> */}
+      </div>
+    );
+  } else if (viewer === true && usertype !== "admin" && width <= 400) {
+    return (
+      <div
+        className="pdf"
+        onContextMenu={(e) => e.preventDefault()}
+        display="flex"
+        align="center"
+      >
+        <Grid
+          container
+          align="center"
+          sx={{
+            justifyContent: "space-between",
+            "& .MuiTextField-root": { m: 1, width: "8ch" },
+            "& .MuiFormControl-root": {
+              m: { xs: 1, md: 2, lg: 2 },
+              width: { xs: "8ch", md: "12ch", lg: "12ch" },
+            },
+          }}
+        >
+          {pageNumber > 1 && (
+            <Button
+              variant="contained"
+              onClick={changePageBack}
+              sx={{ height: { xs: 25 } }}
+            >
+              <ArrowBackIosNewIcon />
+            </Button>
+          )}
+          <TextField
+            placeholder="Search..."
+            label="Jump to..."
+            type="Number"
+            value={pageNumber}
+            onChange={jumpPage}
+            size="small"
+          />
+          <FormControl
+            sx={{ height: { xs: 25, sm: 30, md: 40, lg: 50 } }}
+            size="small"
+          >
+            <InputLabel id="demo-simple-select-label">Zoom</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={page}
+              label="Select Page"
+              onChange={handleChange}
+            >
+              <MenuItem value={400}>10%</MenuItem>
+              <MenuItem value={500}>25%</MenuItem>
+              <MenuItem value={600}>50%</MenuItem>
+              <MenuItem value={650}>75%</MenuItem>
+              <MenuItem value={700}>100%</MenuItem>
+              <MenuItem value={1000}>125%</MenuItem>
+              <MenuItem value={1100}>150%</MenuItem>
+              <MenuItem value={1200}>175%</MenuItem>
+              <MenuItem value={1300}>200%</MenuItem>
+            </Select>
+          </FormControl>
+
+          {pageNumber < numPages && (
+            <Button
+              variant="contained"
+              onClick={changePageNext}
+              sx={{ height: { xs: 25 } }}
+            >
+              <ArrowForwardIosIcon />
+            </Button>
+          )}
+        </Grid>
+        <header
+          className="App-header"
+          sx={{
+            justifyContent: "space-between",
+          }}
+        >
+          <Box
+            sx={{
+              justifyContent: "space-between",
+            }}
+            bgcolor="black"
+          >
+            <Document file={pdfName} onLoadSuccess={onDocumentLoadSuccess}>
+              <Page height={page} pageNumber={pageNumber} />
+            </Document>
+          </Box>{" "}
+          <p>
+            Page {pageNumber} of {numPages}
+          </p>
+        </header>
+        {/* <div>
+          <Document file={pdfName} onLoadSuccess={onDocumentLoadSuccess}>
+            {Array.from(new Array(numPages), (el, index) => (
+              <Page key={`page_${index}`} pageNumber={index} />
+            ))}
+          </Document>
+        </div> */}
       </div>
     );
   } else {
@@ -194,15 +331,15 @@ export default function Thumbnail() {
               <Card margin={1.5} sx={{ height: "550px" }}>
                 <CardActionArea
                   onClick={() => {
-                    opener("http://192.168.1.58:8000/" + val.file_name);
-                    setPdfName("http://192.168.1.58:8000/" + val.file_name);
+                    opener("http://192.168.1.8:8000/" + val.file_name);
+                    setPdfName("http://192.168.1.8:8000/" + val.file_name);
                     // history.push("http://192.168.1.58:8000/" + val.file_name);
                   }}
                 >
                   <CardMedia
                     component="img"
                     height="140"
-                    image={"http://192.168.1.58:8000/" + val.thumbnail}
+                    image={"http://192.168.1.8:8000/" + val.thumbnail}
                     alt="green iguana"
                   />
                   <CardContent>

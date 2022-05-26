@@ -35,7 +35,7 @@ const Print = () => {
   const [userList, setUserList] = useState([]);
 
   const userLog = () => {
-    Axios.post("http://192.168.1.58:8000/api/userlog", {
+    Axios.post("http://192.168.1.8:8000/api/userlog", {
       dateLog: value,
     }).then((response) => {
       if (response.data.message === "failed") {

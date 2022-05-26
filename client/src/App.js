@@ -283,7 +283,20 @@ function App() {
           <Divider />
         </Drawer>
 
-        <Box component="main" sx={{ flexGrow: 2, p: 2 }}>
+        <Box
+          component="main"
+          sx={{
+            pr: 1,
+            pt: 2,
+
+            width: {
+              xs: 370,
+              sm: 600,
+              md: 820,
+              lg: "100%",
+            },
+          }}
+        >
           <DrawerHeader />
           <Route path="/authentication">
             <Login />
