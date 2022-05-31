@@ -288,6 +288,7 @@ function App() {
           sx={{
             pr: 1,
             pt: 2,
+            pl: 1,
 
             width: {
               xs: 370,

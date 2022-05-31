@@ -5,7 +5,7 @@ import "./App.css";
 export default function Viewer(bookname) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-  var filename = bookname;
+
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
     setPageNumber(1);

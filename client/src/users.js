@@ -76,7 +76,7 @@ function Users() {
   const [password, setPassword] = useState("isuroxas1978");
 
   const submitUser = () => {
-    Axios.post("http://192.168.1.8:8000/api/insertuser", {
+    Axios.post("  http://192.168.1.4:8000/api/insertuser", {
       fName: firstName.toLocaleUpperCase(),
       mName: middleName.toUpperCase(),
       lName: lastName.toLocaleUpperCase(),
@@ -98,13 +98,13 @@ function Users() {
 
   const [userList, setUserList] = useState([]);
   useState(() => {
-    Axios.get("http://192.168.1.8:8000/api/getuser").then((response) => {
+    Axios.get("  http://192.168.1.4:8000/api/getuser").then((response) => {
       setUserList(response.data);
     });
   }, []);
   // ------------delete book from data base----------------------
   const deleteUser = (userId) => {
-    Axios.delete(`http://192.168.1.8:8000/api/deleteuser/${userId}`).then(
+    Axios.delete(`  http://192.168.1.4:8000/api/deleteuser/${userId}`).then(
       (response) => {
         alert("Successfully Deleted");
         window.location.reload(false);
@@ -142,7 +142,7 @@ function Users() {
     });
   };
   const updateUser = () => {
-    Axios.put("http://192.168.1.8:8000/api/updateuser", {
+    Axios.put("  http://192.168.1.4:8000/api/updateuser", {
       userNewId: form.updateId,
       userNewFName: form.updateFName,
       userNewMName: form.updateMName,
@@ -176,7 +176,7 @@ function Users() {
   };
 
   const updatepassword = () => {
-    Axios.put("http://192.168.1.8:8000/api/userreset", {
+    Axios.put("  http://192.168.1.4:8000/api/userreset", {
       id: user_id,
       NewPassword: defaultPassword,
     }).then((response) => {
@@ -500,17 +500,6 @@ function Users() {
             value={form.updateUserId}
             fullWidth
             onChange={(e) => setForm({ ...form, updateUserId: e.target.value })}
-          />
-          <TextField
-            margin="dense"
-            id="pw"
-            label="Password"
-            type="password"
-            value={form.updatePassword}
-            fullWidth
-            onChange={(e) =>
-              setForm({ ...form, updatePassword: e.target.value })
-            }
           />
         </DialogContent>
         <DialogActions>

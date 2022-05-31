@@ -47,7 +47,7 @@ export default function Thumbnail() {
   };
   const usertype = localStorage.getItem("user_type");
   React.useState(() => {
-    Axios.get("http://192.168.1.8:8000/api/read").then((response) => {
+    Axios.get("  http://192.168.1.4:8000/api/read").then((response) => {
       setEbookList(response.data);
     });
   }, []);
@@ -85,10 +85,10 @@ export default function Thumbnail() {
     setViewer(false);
   }
 
-  const [searchInput] = useState("");
-  // const searchItems = (searchValue) => {
-  //   setSearchInput(searchValue);
-  // };
+  const [searchInput, setSearchInput] = useState("");
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+  };
 
   const filtered = ebookList.filter((item) => {
     return (
@@ -322,7 +322,7 @@ export default function Thumbnail() {
             placeholder="Search..."
             label="Search"
             type="text"
-            onChange={(e) => e.target.value}
+            onChange={(e) => searchItems(e.target.value.toString())}
           />
         </Box>
         <Grid container>
@@ -331,15 +331,15 @@ export default function Thumbnail() {
               <Card margin={1.5} sx={{ height: "550px" }}>
                 <CardActionArea
                   onClick={() => {
-                    opener("http://192.168.1.8:8000/" + val.file_name);
-                    setPdfName("http://192.168.1.8:8000/" + val.file_name);
+                    opener("  http://192.168.1.4:8000/" + val.file_name);
+                    setPdfName(" http://192.168.1.4:8000/" + val.file_name);
                     // history.push("http://192.168.1.58:8000/" + val.file_name);
                   }}
                 >
                   <CardMedia
                     component="img"
                     height="140"
-                    image={"http://192.168.1.8:8000/" + val.thumbnail}
+                    image={" http://192.168.1.4:8000/" + val.thumbnail}
                     alt="green iguana"
                   />
                   <CardContent>

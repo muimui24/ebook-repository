@@ -13,6 +13,7 @@ import {
 import * as React from "react";
 
 import { useHistory } from "react-router-dom";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 export default function MenuList(open) {
   // const ses = await sessionInfo();
@@ -129,6 +130,32 @@ export default function MenuList(open) {
           </ListItemIcon>
           <ListItemText primary="Print Report" sx={{ opacity: open ? 1 : 0 }} />
         </ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            // navigate("/reset");
+            history.push("/reset");
+          }}
+          key="reset"
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+            }}
+          >
+            <AdminPanelSettingsIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Reset Password"
+            sx={{ opacity: open ? 1 : 0 }}
+          />
+        </ListItemButton>
       </List>
     );
   } else if (user_id === null) {
@@ -205,7 +232,7 @@ export default function MenuList(open) {
             justifyContent: "center",
           }}
         >
-          <ManageAccountsIcon />
+          <AdminPanelSettingsIcon />
         </ListItemIcon>
         <ListItemText primary="Reset Password" sx={{ opacity: open ? 1 : 0 }} />
       </ListItemButton>

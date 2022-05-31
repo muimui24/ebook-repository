@@ -45,7 +45,7 @@ function Login() {
   Axios.defaults.withCredentials = true;
 
   const login = () => {
-    Axios.post("http://192.168.1.8:8000/login", {
+    Axios.post("  http://192.168.1.4:8000/login", {
       userId: userId,
       password: password,
     })
@@ -107,7 +107,7 @@ function Login() {
     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
   const submitlog = () => {
-    Axios.post("http://192.168.1.8:8000/api/logreport", {
+    Axios.post("  http://192.168.1.4:8000/api/logreport", {
       logInId: id,
       logInName: name,
       logInDepartment: department,

@@ -17,7 +17,7 @@ const db = mysql.createPool({
 });
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://192.168.1.8:3000"],
+    origin: ["http://localhost:3000", " http://192.168.1.4:3000"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

@@ -73,7 +73,7 @@ function AddEbook() {
   var thumbnailName = "";
 
   const submitBook = () => {
-    Axios.post("http://192.168.1.8:8000/api/insert", {
+    Axios.post("  http://192.168.1.4:8000/api/insert", {
       ebookTitle: title,
       ebookAuthor: author,
       ebookCategory: category,
@@ -107,7 +107,7 @@ function AddEbook() {
 
     data.append("file", file);
 
-    Axios.post("http://192.168.1.8:8000/upload", data)
+    Axios.post("  http://192.168.1.4:8000/upload", data)
       .then((e) => {
         console.log("Success");
       })
@@ -127,7 +127,7 @@ function AddEbook() {
 
     bookdata.append("file", thumb);
 
-    Axios.post("http://192.168.1.8:8000/upload", bookdata)
+    Axios.post("  http://192.168.1.4:8000/upload", bookdata)
       .then((e) => {
         console.log("Success");
       })
@@ -140,13 +140,13 @@ function AddEbook() {
   const [ebookList, setEbookList] = useState([]);
 
   useState(() => {
-    Axios.get("http://192.168.1.8:8000/api/read").then((response) => {
+    Axios.get(" http://192.168.1.4:8000/api/read").then((response) => {
       setEbookList(response.data);
     });
   }, []);
   // ------------delete book from data base----------------------
   const deleteBook = (bookId) => {
-    Axios.delete(`http://192.168.1.8:8000/api/delete/${bookId}`).then(
+    Axios.delete(`  http://192.168.1.4:8000/api/delete/${bookId}`).then(
       (response) => {
         window.location.reload(false);
         alert("Successfully Deleted");
@@ -184,7 +184,7 @@ function AddEbook() {
     });
   };
   const updateBook = () => {
-    Axios.put("http://192.168.1.8:8000/api/update", {
+    Axios.put("  http://192.168.1.4:8000/api/update", {
       ebookNewId: form.updateId,
       ebookNewTitle: form.updateTitle,
       ebookNewAuthor: form.updateAuthor,

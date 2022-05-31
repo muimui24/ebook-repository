@@ -26,9 +26,10 @@ const Reset = () => {
   const [newPassword2, setnewPassword2] = React.useState("");
   const [oldPassword, setOldPassword] = React.useState("");
   const id = localStorage.getItem("user_id");
+  const [status, setStatus] = React.useState("");
 
   const inputupdated = () => {
-    Axios.put("http://192.168.1.8:8000/api/updatepassword", {
+    Axios.put("  http://192.168.1.4:8000/api/updatepassword", {
       id: user_id,
       NewPassword: newPassword2,
     }).then((response) => {
@@ -41,7 +42,7 @@ const Reset = () => {
   };
 
   const updatepassword = () => {
-    Axios.post("http://192.168.1.8:8000/api/changepassword", {
+    Axios.post(" http://192.168.1.4:8000/api/changepassword", {
       userId: id,
       password: oldPassword,
     }).then((response) => {
@@ -51,7 +52,10 @@ const Reset = () => {
         newPassword1 === newPassword2
       ) {
         inputupdated();
+      } else if (newPassword1 !== newPassword2) {
+        setStatus("Password didn't match");
       } else {
+        setStatus("Incorrect Password");
       }
     });
 
@@ -70,8 +74,19 @@ const Reset = () => {
 
   return (
     <>
-      <Dialog open={openUpdate}>
-        <DialogTitle>Update Password</DialogTitle>
+      <Dialog open={openUpdate} sx={{ alignItems: "center" }}>
+        <DialogTitle>
+          Update Password <br />
+          <Typography
+            sx={{ alignItems: "center" }}
+            component="h1"
+            variant="h6"
+            color="red"
+          >
+            {status}
+          </Typography>
+        </DialogTitle>
+
         <DialogContent>
           <TextField
             margin="dense"
