@@ -12,7 +12,7 @@ function ProtectedRoutes({ isAuth, component: Component, ...rest }) {
           return (
             <Redirect
               to={{
-                pathname: "/authentication",
+                pathname: "/",
                 state: { from: props.location },
               }}
             />

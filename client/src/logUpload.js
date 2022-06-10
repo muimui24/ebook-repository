@@ -16,7 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Axios from "axios";
 
-const Print = () => {
+const PrintUpload = () => {
   const componentRef = React.useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -32,15 +32,15 @@ const Print = () => {
   // //   },
   // // ];
   // ----------------get log--------------------------
-  const [userList, setUserList] = useState([]);
+  const [uploadList, setUploadList] = useState([]);
 
-  const userLog = () => {
-    Axios.post("  http://localhost:8000/api/userlog", {
+  const uploadLog = () => {
+    Axios.post("  http://localhost:8000/api/uploadlog", {
       dateLog: start_range,
       dateLogEnd: end_range,
     }).then((response) => {
       if (response.data.message === "failed") {
-        setUserList([
+        setUploadList([
           {
             id: "",
             user_id: "--",
@@ -50,10 +50,10 @@ const Print = () => {
             time: "--",
           },
         ]);
-        console.log(userList);
+        console.log(uploadList);
       } else {
         console.log(response);
-        setUserList(response.data);
+        setUploadList(response.data);
       }
     });
   };
@@ -119,7 +119,7 @@ const Print = () => {
                 />
                 <Button
                   onClick={() => {
-                    userLog();
+                    uploadLog();
                   }}
                   className="print__button"
                 >
@@ -144,7 +144,7 @@ const Print = () => {
                     E-BOOK REPOSITORY
                   </h3>
                   <h4 className="card-title mb-0" align="center">
-                    Users Log In Report
+                    Upload Report
                   </h4>
                   <br />
                   <h6 className="card-title mb-0" align="right">
@@ -167,15 +167,15 @@ const Print = () => {
                         <TableRow>
                           <TableCell></TableCell>
                           <TableCell></TableCell>
-                          <TableCell>Id</TableCell>
-                          <TableCell>Name</TableCell>
-                          <TableCell>Course</TableCell>
-                          <TableCell>User Type</TableCell>
-                          <TableCell>Time Logged in</TableCell>
+                          <TableCell>Title</TableCell>
+                          <TableCell>author</TableCell>
+                          <TableCell>Category</TableCell>
+
+                          <TableCell>Time Uploaded</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {userList.map((row) => (
+                        {uploadList.map((row) => (
                           <TableRow
                             key={row.id}
                             sx={{
@@ -186,10 +186,10 @@ const Print = () => {
                             <TableCell component="th" scope="row">
                               {(num = num + 1)}
                             </TableCell>
-                            <TableCell align="left">{row.user_id}</TableCell>
-                            <TableCell>{row.user_name}</TableCell>
-                            <TableCell>{row.user_department}</TableCell>
-                            <TableCell>{row.user_type}</TableCell>
+                            <TableCell align="left">{row.title}</TableCell>
+                            <TableCell>{row.author}</TableCell>
+                            <TableCell>{row.category}</TableCell>
+
                             <TableCell>{row.time}</TableCell>
                           </TableRow>
                         ))}
@@ -205,4 +205,4 @@ const Print = () => {
     </LocalizationProvider>
   );
 };
-export default Print;
+export default PrintUpload;

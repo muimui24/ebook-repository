@@ -192,7 +192,7 @@ export default function MenuList(open) {
     <List>
       <ListItemButton
         onClick={() => {
-          history.push("/ebooks");
+          history.push("/");
           window.location.reload(false);
         }}
         key="ebooks"

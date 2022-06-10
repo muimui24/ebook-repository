@@ -34,18 +34,19 @@ function Login() {
   // function logout() {
   //   localStorage.removeItem("user_id");
   // }
+
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setStatus] = useState("");
 
   function refreshPage() {
-    window.location.reload(false);
+    window.location.href = "http://localhost:3000/ebooks";
   }
 
   Axios.defaults.withCredentials = true;
 
   const login = () => {
-    Axios.post("  http://192.168.1.4:8000/login", {
+    Axios.post("  http://localhost:8000/login", {
       userId: userId,
       password: password,
     })
@@ -80,6 +81,7 @@ function Login() {
           // const user = localStorage.getItem("user_id");
           // console.log(user);
           submitlog();
+
           setStatus("");
           refreshPage();
         } else if (response.data.message === "User not exist") {
@@ -101,18 +103,22 @@ function Login() {
   var department = "";
   var type = "";
   var date = new Date(new Date().setHours(0, 0, 0, 0));
+  const start_range = new Date(date)
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
   var today = new Date();
 
   var curTime =
     today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
   const submitlog = () => {
-    Axios.post("  http://192.168.1.4:8000/api/logreport", {
+    Axios.post("  http://localhost:8000/api/logreport", {
       logInId: id,
       logInName: name,
       logInDepartment: department,
       logInType: type,
-      date: date,
+      date: start_range,
       time: curTime,
     });
     console.log(date);
@@ -120,7 +126,7 @@ function Login() {
   const user_id = localStorage.getItem("user_id");
   if (user_id) {
     return (
-      <Route exact path="/authentication">
+      <Route exact path="/">
         <Redirect to="/ebooks" />
       </Route>
     );

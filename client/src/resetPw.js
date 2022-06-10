@@ -29,7 +29,7 @@ const Reset = () => {
   const [status, setStatus] = React.useState("");
 
   const inputupdated = () => {
-    Axios.put("  http://192.168.1.4:8000/api/updatepassword", {
+    Axios.put(" http://localhost:8000/api/updatepassword", {
       id: user_id,
       NewPassword: newPassword2,
     }).then((response) => {
@@ -42,7 +42,7 @@ const Reset = () => {
   };
 
   const updatepassword = () => {
-    Axios.post(" http://192.168.1.4:8000/api/changepassword", {
+    Axios.post(" http://localhost:8000/api/changepassword", {
       userId: id,
       password: oldPassword,
     }).then((response) => {

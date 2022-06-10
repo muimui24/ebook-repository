@@ -47,7 +47,7 @@ export default function Thumbnail() {
   };
   const usertype = localStorage.getItem("user_type");
   React.useState(() => {
-    Axios.get("  http://192.168.1.4:8000/api/read").then((response) => {
+    Axios.get("  http://localhost:8000/api/read").then((response) => {
       setEbookList(response.data);
     });
   }, []);
@@ -331,15 +331,15 @@ export default function Thumbnail() {
               <Card margin={1.5} sx={{ height: "550px" }}>
                 <CardActionArea
                   onClick={() => {
-                    opener("  http://192.168.1.4:8000/" + val.file_name);
-                    setPdfName(" http://192.168.1.4:8000/" + val.file_name);
+                    opener("  http://localhost:8000/" + val.file_name);
+                    setPdfName(" http://localhost:8000/" + val.file_name);
                     // history.push("http://192.168.1.58:8000/" + val.file_name);
                   }}
                 >
                   <CardMedia
                     component="img"
                     height="140"
-                    image={" http://192.168.1.4:8000/" + val.thumbnail}
+                    image={" http://localhost:8000/" + val.thumbnail}
                     alt="green iguana"
                   />
                   <CardContent>

@@ -72,8 +72,17 @@ function AddEbook() {
   var fileName = "";
   var thumbnailName = "";
 
+  var date = new Date(new Date(new Date().setHours(0, 0, 0, 0)))
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
+  var today = new Date();
+
+  var curTime =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
   const submitBook = () => {
-    Axios.post("  http://192.168.1.4:8000/api/insert", {
+    Axios.post(" http://localhost:8000/api/insert", {
       ebookTitle: title,
       ebookAuthor: author,
       ebookCategory: category,
@@ -91,8 +100,23 @@ function AddEbook() {
       window.location.reload(false);
     });
     console.log(title);
+    submitlog();
   };
+  //-----------upload log-----=-=-=-=----------
 
+  const submitlog = () => {
+    Axios.post("  http://localhost:8000/api/logupload", {
+      logInTitle: title,
+      logInAuthor: author,
+      logInCategory: category,
+      logInSubject: subject,
+      logInAccNo: accession_no,
+      logInCallNo: call_no,
+      date: date,
+      time: curTime,
+    });
+    console.log(date);
+  };
   // ------------upload------------------------------
   var file = null;
   const onInputChange = async (e) => {
@@ -107,7 +131,7 @@ function AddEbook() {
 
     data.append("file", file);
 
-    Axios.post("  http://192.168.1.4:8000/upload", data)
+    Axios.post("  http://localhost:8000/upload", data)
       .then((e) => {
         console.log("Success");
       })
@@ -127,7 +151,7 @@ function AddEbook() {
 
     bookdata.append("file", thumb);
 
-    Axios.post("  http://192.168.1.4:8000/upload", bookdata)
+    Axios.post("  http://localhost:8000/upload", bookdata)
       .then((e) => {
         console.log("Success");
       })
@@ -140,13 +164,13 @@ function AddEbook() {
   const [ebookList, setEbookList] = useState([]);
 
   useState(() => {
-    Axios.get(" http://192.168.1.4:8000/api/read").then((response) => {
+    Axios.get(" http://localhost:8000/api/read").then((response) => {
       setEbookList(response.data);
     });
   }, []);
   // ------------delete book from data base----------------------
   const deleteBook = (bookId) => {
-    Axios.delete(`  http://192.168.1.4:8000/api/delete/${bookId}`).then(
+    Axios.delete(`  http://localhost:8000/api/delete/${bookId}`).then(
       (response) => {
         window.location.reload(false);
         alert("Successfully Deleted");
@@ -184,7 +208,7 @@ function AddEbook() {
     });
   };
   const updateBook = () => {
-    Axios.put("  http://192.168.1.4:8000/api/update", {
+    Axios.put("  http://localhost:8000/api/update", {
       ebookNewId: form.updateId,
       ebookNewTitle: form.updateTitle,
       ebookNewAuthor: form.updateAuthor,

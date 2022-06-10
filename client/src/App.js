@@ -23,7 +23,9 @@ import Print from "./logreport";
 import Thumbnail from "./displayEbook";
 import Reset from "./resetPw";
 import ProtectedRoutes from "./routesProtecting";
-
+import PrintUpload from "./logUpload";
+import Dashboard from "./dashboard";
+import Barchart from "./barchart";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -194,7 +196,7 @@ function App() {
             <Route path="/reset" element={<Reset />} /> */}
             {/* <Route path="/authentication" element={<Login />} /> */}
             {/* </Routes> */}
-            <Route path="/authentication">
+            <Route path="/">
               <Login />
             </Route>
 
@@ -215,18 +217,17 @@ function App() {
               isAuth={adminAuth}
             />
             <ProtectedRoutes
-              path="/ebooks"
+              path={"/ebooks"}
               component={Thumbnail}
               isAuth={isAuth}
             />
           </Box>
-        </Box>{" "}
+        </Box>
       </Router>
     );
   }
   return (
     <Router>
-      {" "}
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar
@@ -299,9 +300,6 @@ function App() {
           }}
         >
           <DrawerHeader />
-          <Route path="/authentication">
-            <Login />
-          </Route>
 
           <ProtectedRoutes
             path="/addEbook"
@@ -310,6 +308,12 @@ function App() {
           />
           <ProtectedRoutes path="/reset" component={Reset} isAuth={isAuth} />
           <ProtectedRoutes path="/print" component={Print} isAuth={adminAuth} />
+          <ProtectedRoutes
+            path="/logUpload"
+            component={PrintUpload}
+            isAuth={adminAuth}
+          />
+
           <ProtectedRoutes path="/user" component={Users} isAuth={adminAuth} />
           <ProtectedRoutes
             path={"/ebooks"}

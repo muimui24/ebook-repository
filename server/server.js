@@ -76,6 +76,60 @@ app.post("/api/insert", (req, res) => {
     }
   );
 });
+
+// -----------log upload------------------------------------------
+app.post("/api/logupload", (req, res) => {
+  const logInTitle = req.body.logInTitle;
+  const logInAuthor = req.body.logInAuthor;
+  const logInCategory = req.body.logInCategory;
+  const logInSubject = req.body.logInSubject;
+  const logInCallNo = req.body.logInCallNo;
+  const logInAccNo = req.body.logInAccNo;
+  const logDate = req.body.date;
+  const logTime = req.body.time.toString();
+  const sqlInsert =
+    "INSERT INTO upload_log (title,author, subject,category, call_no,accession_no,date, time) VALUES (?,?,?,?,?, ?,?,?);";
+
+  db.query(
+    sqlInsert,
+    [
+      logInTitle,
+      logInAuthor,
+      logInSubject,
+      logInCategory,
+      logInCallNo,
+      logInAccNo,
+      logDate,
+      logTime,
+    ],
+    (err, result) => {
+      console.log(err);
+
+      res.send(result);
+    }
+  );
+});
+///------=-=-=-=-=-=--get upload log==-=-=-=-=-=-=-=-=-
+
+app.post("/api/uploadlog", (req, res) => {
+  const date = req.body.dateLog;
+  const date2 = req.body.dateLogEnd;
+
+  db.query(
+    "SELECT * FROM upload_log WHERE date >=? AND date <=? ",
+    [date, date2],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+        console.log(result.length);
+      }
+    }
+  );
+});
+
 // ---------------read------------------------------------------
 
 app.get("/api/read", (req, res) => {
@@ -237,10 +291,11 @@ app.post("/api/logreport", (req, res) => {
 
 app.post("/api/userlog", (req, res) => {
   const date = req.body.dateLog;
+  const date2 = req.body.dateLogEnd;
 
   db.query(
-    "SELECT * FROM login_reports WHERE date =? AND user_type !='admin' ",
-    [date],
+    "SELECT * FROM login_reports WHERE date >=? AND date <=?  AND user_type !='admin' ",
+    [date, date2],
     (err, result) => {
       if (err || result.length == 0) {
         res.send({ message: "failed" });
@@ -376,6 +431,26 @@ app.post("/api/changepassword", async (req, res) => {
       });
     }
   });
+  //-------==--=-=-=-=-count  user------=-=-=-=-
+});
+app.post("/api/countLog", (req, res) => {
+  const date = req.body.dateLog;
+  const date2 = req.body.dateLogEnd;
+  const course = req.body.course;
+
+  db.query(
+    "SELECT COUNT(*) FROM login_reports WHERE user_department=? AND date >=? AND date <=?  AND user_type !='admin' ",
+    [course, date, date2],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+        console.log(result.length);
+      }
+    }
+  );
 });
 
 // ------------------------------------------------------------
