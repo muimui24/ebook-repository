@@ -26,6 +26,7 @@ import ProtectedRoutes from "./routesProtecting";
 import PrintUpload from "./logUpload";
 import Dashboard from "./dashboard";
 import Barchart from "./barchart";
+import Recommended from "./recommended";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -318,6 +319,16 @@ function App() {
           <ProtectedRoutes
             path={"/ebooks"}
             component={Thumbnail}
+            isAuth={isAuth}
+          />
+          <ProtectedRoutes
+            path={"/dashboard"}
+            component={Dashboard}
+            isAuth={isAuth}
+          />
+          <ProtectedRoutes
+            path={"/recommended"}
+            component={Recommended}
             isAuth={isAuth}
           />
         </Box>

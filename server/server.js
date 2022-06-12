@@ -53,9 +53,10 @@ app.post("/api/insert", (req, res) => {
   const place_publication = req.body.place_publication;
   const accession = req.body.accession;
   const call_number = req.body.call_number;
+  const recommended = req.body.recommended;
 
   const sqlInsert =
-    "INSERT INTO ebooks (title, author, category, file_name, description, thumbnail, subject, year_published, publication_place, call_no, accession_no) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
+    "INSERT INTO ebooks (title, author, category, file_name, description, thumbnail, subject, year_published, publication_place, call_no, accession_no, recommended_to) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
   db.query(
     sqlInsert,
     [
@@ -70,6 +71,7 @@ app.post("/api/insert", (req, res) => {
       place_publication,
       call_number,
       accession,
+      recommended,
     ],
     (err, result) => {
       res.send(result);
@@ -168,9 +170,10 @@ app.put("/api/update", (req, res) => {
   const updatePlace = req.body.placePublished;
   const updateCallNo = req.body.updateCallNo;
   const updateAccession = req.body.updateAccessionNo;
+  const updateRecommended = req.body.updateRecommended;
 
   const sqlUpdate =
-    "UPDATE ebooks SET title = ?, author = ?, category = ?, description = ?, subject = ?, year_published = ?, publication_place = ?, call_no = ?, accession_no = ? WHERE id = ?";
+    "UPDATE ebooks SET title = ?, author = ?, category = ?, description = ?, subject = ?, year_published = ?, publication_place = ?, call_no = ?, accession_no = ?, recommended_to = ? WHERE id = ?";
   db.query(
     sqlUpdate,
     [
@@ -184,6 +187,7 @@ app.put("/api/update", (req, res) => {
       updatePlace,
       updateCallNo,
       updateAccession,
+      updateRecommended,
       updateId,
     ],
     (err, result) => {
@@ -431,28 +435,412 @@ app.post("/api/changepassword", async (req, res) => {
       });
     }
   });
-  //-------==--=-=-=-=-count  user------=-=-=-=-
 });
-app.post("/api/countLog", (req, res) => {
-  const date = req.body.dateLog;
-  const date2 = req.body.dateLogEnd;
-  const course = req.body.course;
+//-------==--=-=-=-=-count  bsit------=-=-=-=-
+app.post("/api/countBsit", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "BSIT";
 
   db.query(
-    "SELECT COUNT(*) FROM login_reports WHERE user_department=? AND date >=? AND date <=?  AND user_type !='admin' ",
-    [course, date, date2],
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE()) AND  user_department=?   ",
+    [course],
     (err, result) => {
       if (err || result.length == 0) {
         res.send({ message: "failed" });
       } else if (result !== null) {
         res.send(result);
       } else {
-        console.log(result.length);
+      }
+    }
+  );
+});
+//-------==--=-=-=-=-count  bse------=-=-=-=-
+app.post("/api/countBse", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "BSE";
+
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE()) AND  user_department=?   ",
+    [course],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//-------==--=-=-=-=-count  bsa------=-=-=-=-
+app.post("/api/countBsa", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "BSA";
+
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE())AND  user_department=?   ",
+    [course],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+}); //-------==--=-=-=-=-count  bsab------=-=-=-=-
+app.post("/api/countBsab", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "BSAB";
+
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE()) AND  user_department=?   ",
+    [course],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//-------==--=-=-=-=-count  bsc------=-=-=-=-
+app.post("/api/countBsc", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "BSC";
+
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE()) AND  user_department=?   ",
+    [course],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//-------==--=-=-=-=-count  bslea------=-=-=-=-
+app.post("/api/countBslea", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "BSLEA";
+
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE()) AND  user_department=?   ",
+    [course],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//-------==--=-=-=-=-count  bsf------=-=-=-=-
+app.post("/api/countBsf", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "BSF";
+
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE()) AND  user_department=?   ",
+    [course],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//-------==--=-=-=-=-count  msf------=-=-=-=-
+app.post("/api/countmsf", (req, res) => {
+  const year = req.body.year;
+  const month = req.body.month;
+  const course = "MSF";
+  // SELECT * FROM student_enroll_date WHERE YEAR(enroll_date) = 2019 AND MONTH(enroll_date) = 12;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE())AND  user_department=?   ",
+    [course],
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//-------==--=-=-=-=-count  all books------=-=-=-=-
+app.get("/api/countbook", (req, res) => {
+  const sqlSelect = "SELECT * FROM ebooks";
+  db.query(sqlSelect, (err, result) => {
+    res.send(result);
+  });
+});
+
+//---=-=-=-=-=-=-=-=-=uploads this month--=-===-=-=-=-=-
+app.post("/api/uploadThisMonth", (req, res) => {
+  // SELECT * FROM student_enroll_date WHERE YEAR(enroll_date) = 2019 AND MONTH(enroll_date) = 12;
+  db.query(
+    "SELECT * FROM upload_log WHERE YEAR(date) =YEAR(CURDATE())  AND MONTH(date) =  MONTH(CURDATE()) ",
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=count visits----=-=-=-=-==-------=-
+app.post("/api/countvisits", (req, res) => {
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =YEAR(CURDATE()) AND MONTH(date) =  MONTH(CURDATE()) AND  user_type!='admin'   ",
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=jan----=-=-=-=-==-------=-
+app.post("/api/countjan", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =1 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=feb----=-=-=-=-==-------=-
+app.post("/api/countfeb", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =2 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=march----=-=-=-=-==-------=-
+app.post("/api/countmar", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =3 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
       }
     }
   );
 });
 
+//==-=-=-=-=-=--=april---=-=-=-=-==-------=-
+app.post("/api/countapr", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =4 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=may----=-=-=-=-==-------=-
+app.post("/api/countmay", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =5 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=jun----=-=-=-=-==-------=-
+app.post("/api/countjun", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =6 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=jul----=-=-=-=-==-------=-
+app.post("/api/countjul", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =7 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=august----=-=-=-=-==-------=-
+app.post("/api/countaug", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =8 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+
+//==-=-=-=-=-=--=september----=-=-=-=-==-------=-
+app.post("/api/countsept", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =9 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=october----=-=-=-=-==-------=-
+app.post("/api/countoct", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =10 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=november----=-=-=-=-==-------=-
+app.post("/api/countnov", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =11 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//==-=-=-=-=-=--=december----=-=-=-=-==-------=-
+app.post("/api/countdec", (req, res) => {
+  const year = req.body.year;
+  db.query(
+    "SELECT * FROM login_reports WHERE YEAR(date) =? AND MONTH(date) =12 AND  user_type!='admin'   ",
+    [year],
+
+    (err, result) => {
+      if (err || result.length == 0) {
+        res.send({ message: "failed" });
+      } else if (result !== null) {
+        res.send(result);
+      } else {
+      }
+    }
+  );
+});
+//--=-=-=-=-=-=-=-=-=recommended=-=-=-------------------
+app.get("/api/recommended", (req, res) => {
+  const course = req.body.course;
+
+  const sqlSelect = "SELECT * FROM ebooks WHERE recommended_to = ?";
+  db.query(sqlSelect, ["BSIT"], (err, result) => {
+    res.send(result);
+  });
+});
 // ------------------------------------------------------------
 
 const storage = multer.diskStorage({

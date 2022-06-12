@@ -15,6 +15,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const Print = () => {
   const componentRef = React.useRef();
@@ -33,7 +34,7 @@ const Print = () => {
   // // ];
   // ----------------get log--------------------------
   const [userList, setUserList] = useState([]);
-
+  const history = useHistory();
   const userLog = () => {
     Axios.post("  http://localhost:8000/api/userlog", {
       dateLog: start_range,
@@ -92,7 +93,14 @@ const Print = () => {
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <h2>PRINT REPORT:</h2>
+      <h2>REPORT FOR USER LOGGED IN HISTORY:</h2>
+      <Button
+        onClick={() => {
+          history.push("/logUpload");
+        }}
+      >
+        Go to Book Upload Report
+      </Button>
       <div className="print__section">
         <style>{getPageMargins()}</style>
         <div className="container">

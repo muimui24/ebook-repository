@@ -12,7 +12,11 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 
+import { Select } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -68,6 +72,7 @@ function AddEbook() {
   const [pub_place, setPub_Place] = useState("");
   const [accession_no, setAccession_no] = useState("");
   const [call_no, setCall_no] = useState("");
+  const [recommended, setRecommended] = useState("");
 
   var fileName = "";
   var thumbnailName = "";
@@ -94,6 +99,7 @@ function AddEbook() {
       place_publication: pub_place,
       accession: accession_no,
       call_number: call_no,
+      recommended: recommended,
     }).then((result) => {
       alert("Successfully Uploaded");
       handleClose();
@@ -190,6 +196,7 @@ function AddEbook() {
       placePublished: "",
       updateCallNo: "",
       updateAccessionNo: "",
+      updateRecommended: "",
     },
   ]);
 
@@ -205,6 +212,7 @@ function AddEbook() {
       placePublished: book.publication_place,
       updateCallNo: book.call_no,
       updateAccessionNo: book.accession_no,
+      updateRecommended: book.recommended_to,
     });
   };
   const updateBook = () => {
@@ -219,6 +227,7 @@ function AddEbook() {
       placePublished: form.placePublished,
       updateCallNo: form.updateCallNo,
       updateAccessionNo: form.updateAccessionNo,
+      updateRecommended: form.updateRecommended,
     });
     handleClickCloseUpdate();
     alert("Successfully updated");
@@ -324,6 +333,29 @@ function AddEbook() {
               setAccession_no(e.target.value);
             }}
           />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Course</InputLabel>
+
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={recommended}
+              label="Department"
+              onChange={(e) => {
+                setRecommended(e.target.value);
+              }}
+            >
+              <MenuItem value={"BSIT"}>BSIT</MenuItem>
+              <MenuItem value={"BSE"}>BSE</MenuItem>
+              <MenuItem value={"BSC"}>BSC</MenuItem>
+              <MenuItem value={"BSA"}>BSA</MenuItem>
+              <MenuItem value={"BSAB"}>BSAB</MenuItem>
+              <MenuItem value={"BSLEA"}>BSLEA</MenuItem>
+              <MenuItem value={"BSF"}>BSF</MenuItem>
+
+              <MenuItem value={"MSF"}>MSF</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             margin="dense"
             id="description"
@@ -452,6 +484,30 @@ function AddEbook() {
               setForm({ ...form, updateAccessionNo: e.target.value })
             }
           />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Course</InputLabel>
+
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={form.updateRecommended}
+              label="Department"
+              onChange={(e) => {
+                setForm({ ...form, updateRecommended: e.target.value });
+              }}
+            >
+              <MenuItem value={"BSIT"}>BSIT</MenuItem>
+              <MenuItem value={"BSE"}>BSE</MenuItem>
+              <MenuItem value={"BSC"}>BSC</MenuItem>
+              <MenuItem value={"BSA"}>BSA</MenuItem>
+              <MenuItem value={"BSAB"}>BSAB</MenuItem>
+              <MenuItem value={"BSLEA"}>BSLEA</MenuItem>
+              <MenuItem value={"BSF"}>BSF</MenuItem>
+
+              <MenuItem value={"MSF"}>MSF</MenuItem>
+            </Select>
+          </FormControl>
+
           <TextField
             margin="dense"
             id="newdescription"

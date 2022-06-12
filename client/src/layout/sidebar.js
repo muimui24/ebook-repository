@@ -9,6 +9,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 import * as React from "react";
 
@@ -35,7 +37,7 @@ export default function MenuList(open) {
         <ListItemButton
           onClick={() => {
             // navigate("/");
-            history.push("/ebooks");
+            history.push("/dashboard");
             window.location.reload(false);
 
             localStorage.setItem("opener", false);
@@ -57,6 +59,32 @@ export default function MenuList(open) {
             <HomeRoundedIcon />
           </ListItemIcon>
           <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+        </ListItemButton>
+        <ListItemButton
+          onClick={() => {
+            // navigate("/");
+            history.push("/ebooks");
+            window.location.reload(false);
+
+            localStorage.setItem("opener", false);
+          }}
+          key="home"
+          sx={{
+            minHeight: 48,
+            justifyContent: open ? "initial" : "center",
+            px: 2.5,
+          }}
+        >
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+            }}
+          >
+            <MenuBookIcon />
+          </ListItemIcon>
+          <ListItemText primary="View E-books" sx={{ opacity: open ? 1 : 0 }} />
         </ListItemButton>
         <ListItemButton
           onClick={() => {
@@ -192,7 +220,7 @@ export default function MenuList(open) {
     <List>
       <ListItemButton
         onClick={() => {
-          history.push("/");
+          history.push("/recommended");
           window.location.reload(false);
         }}
         key="ebooks"
@@ -212,6 +240,29 @@ export default function MenuList(open) {
           <HomeRoundedIcon />
         </ListItemIcon>
         <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+      </ListItemButton>
+      <ListItemButton
+        onClick={() => {
+          history.push("/ebooks");
+          window.location.reload(false);
+        }}
+        key="ebooks"
+        sx={{
+          minHeight: 48,
+          justifyContent: open ? "initial" : "center",
+          px: 2.5,
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: open ? 3 : "auto",
+            justifyContent: "center",
+          }}
+        >
+          <SearchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Explore" sx={{ opacity: open ? 1 : 0 }} />
       </ListItemButton>
       <ListItemButton
         onClick={() => {

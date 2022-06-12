@@ -40,7 +40,7 @@ function Login() {
   const [loginStatus, setStatus] = useState("");
 
   function refreshPage() {
-    window.location.href = "http://localhost:3000/ebooks";
+    window.location.href = "http://localhost:3000/dashboard";
   }
 
   Axios.defaults.withCredentials = true;
