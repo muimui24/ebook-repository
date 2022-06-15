@@ -20,6 +20,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+// import SearchIcon from "@mui/icons-material/Search";
 // import { styled } from "@mui/material/styles";
 
 // const Root = styled("div")(({ theme }) => ({
@@ -35,8 +36,10 @@ export default function Thumbnail() {
   const [viewer, setViewer] = React.useState(false);
   const [pdfName, setPdfName] = React.useState("");
   const [ebookList, setEbookList] = React.useState([]);
+  const [recommendedList, setRecommendedList] = React.useState([]);
   const [page, setPage] = React.useState(700);
   const hasWindow = typeof window !== "undefined";
+  const course = localStorage.getItem("user_dep");
   const width = hasWindow ? window.innerWidth : null;
 
   const handleChange = (event) => {
@@ -49,6 +52,14 @@ export default function Thumbnail() {
   React.useState(() => {
     Axios.get("  http://localhost:8000/api/read").then((response) => {
       setEbookList(response.data);
+    });
+  }, []);
+  console.log(course);
+  React.useState(() => {
+    Axios.post("  http://localhost:8000/api/recommended", {
+      course: course.toString(),
+    }).then((response) => {
+      setRecommendedList(response.data);
     });
   }, []);
 
@@ -79,7 +90,7 @@ export default function Thumbnail() {
     }
     setViewer(true);
   }
-
+  // const [filtered, setFiltered] = useState(ebookList);
   var closing = localStorage.getItem("opener");
   if (closing === false) {
     setViewer(false);
@@ -97,9 +108,11 @@ export default function Thumbnail() {
       item.author.toLowerCase().includes(searchInput.toLowerCase())
     );
   });
-  // if (width < 400) {
-  //   setPage();
-  // }
+
+  // const search = async () => {
+  //   setFiltered(to_filter);
+  //   setRecommendedList([]);
+  // };
 
   if (viewer === true && usertype !== "admin" && width > 400) {
     return (
@@ -322,10 +335,62 @@ export default function Thumbnail() {
             placeholder="Search..."
             label="Search"
             type="text"
-            onChange={(e) => searchItems(e.target.value.toString())}
+            onChange={(e) =>
+              searchItems(e.target.value.toString(), setRecommendedList([]))
+            }
           />
         </Box>
         <Grid container>
+          {recommendedList.map((val) => (
+            <Grid margin={3} item xs={10} sm={6} md={2.5} key={val.id}>
+              <Card margin={1.5} sx={{ height: "550px" }}>
+                <CardActionArea
+                  onClick={() => {
+                    opener("  http://localhost:8000/" + val.file_name);
+                    setPdfName(" http://localhost:8000/" + val.file_name);
+                    // history.push("http://192.168.1.58:8000/" + val.file_name);
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={" http://localhost:8000/" + val.thumbnail}
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {val.title}
+                    </Typography>
+
+                    <Box display="">
+                      <Typography variant="body2" color="text.secondary">
+                        By: {val.author}
+                      </Typography>
+
+                      <Typography variant="body2" color="text.secondary">
+                        Category: {val.category}
+                        <br />
+                        Year Published:{val.year_published}
+                        <br />
+                        Place of Publication:{val.publication_place}
+                        <br />
+                        Suubject:{val.subject}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Accesion #: {val.accession_no}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Call #:{val.call_no}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {val.description}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
           {filtered.map((val) => (
             <Grid margin={3} item xs={10} sm={6} md={2.5} key={val.id}>
               <Card margin={1.5} sx={{ height: "550px" }}>

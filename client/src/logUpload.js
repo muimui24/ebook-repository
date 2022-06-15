@@ -95,11 +95,12 @@ const PrintUpload = () => {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <h2>REPORT FOR UPLOADED BOOKS:</h2>
       <Button
+        variant="outlined"
         onClick={() => {
           history.push("/print");
         }}
       >
-        Book Upload Report
+        Go to Logged In History Report
       </Button>
       <div className="print__section">
         <style>{getPageMargins()}</style>

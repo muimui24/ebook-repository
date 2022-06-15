@@ -833,13 +833,35 @@ app.post("/api/countdec", (req, res) => {
   );
 });
 //--=-=-=-=-=-=-=-=-=recommended=-=-=-------------------
-app.get("/api/recommended", (req, res) => {
+app.post("/api/recommended", (req, res) => {
   const course = req.body.course;
-
+  console.log(course);
   const sqlSelect = "SELECT * FROM ebooks WHERE recommended_to = ?";
-  db.query(sqlSelect, ["BSIT"], (err, result) => {
+  db.query(sqlSelect, course, (err, result) => {
     res.send(result);
   });
+});
+
+//------=-=-==-=-=-==--log rating----=-=--------=-=--
+app.post("/api/rating", (req, res) => {
+  const rate1 = req.body.rate1;
+  const rate2 = req.body.rate2;
+  const rate3 = req.body.rate3;
+  const user_id = req.body.user_id;
+  const user_name = req.body.user_name;
+
+  const sqlInsert =
+    "INSERT INTO rate (satisfaction_1,satisfaction_2, satisfaction_3,user_name, user_id) VALUES (?,?,?,?,?);";
+
+  db.query(
+    sqlInsert,
+    [rate1, rate2, rate3, user_name, user_id],
+    (err, result) => {
+      console.log(err);
+
+      res.send(result);
+    }
+  );
 });
 // ------------------------------------------------------------
 

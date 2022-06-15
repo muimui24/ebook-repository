@@ -23,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Axios from "axios";
 import { Box, Button } from "@mui/material";
+import Rating from "@mui/material/Rating";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,6 +46,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function AddEbook() {
+  const [value, setValue] = React.useState(2);
   const [open, setOpen] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
 
@@ -251,7 +253,16 @@ function AddEbook() {
       {/* ---------------add ebook dialog ---------*/}
       <Dialog open={open}>
         <DialogTitle>Book Details</DialogTitle>
+
         <DialogContent>
+          <Rating name="read-only" value={value} readOnly />
+          <Rating
+            name="simple-controlled"
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+          />
           <TextField
             autoFocus
             margin="dense"

@@ -13,7 +13,7 @@ import {
 import { TextField } from "@mui/material";
 import "./display.css";
 import { useState } from "react";
-import Axios from "axios";
+// import Axios from "axios";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -37,7 +37,7 @@ export default function Recommended() {
   const [pageNumber, setPageNumber] = React.useState(1);
   const [viewer, setViewer] = React.useState(false);
   const [pdfName, setPdfName] = React.useState("");
-  const [ebookList, setEbookList] = React.useState([]);
+  const [ebookList] = React.useState([]);
   const [page, setPage] = React.useState(700);
   const hasWindow = typeof window !== "undefined";
   const width = hasWindow ? window.innerWidth : null;
@@ -49,12 +49,12 @@ export default function Recommended() {
     setPageNumber(parseInt(event.target.value));
   };
   const usertype = localStorage.getItem("user_type");
-  const username = localStorage.getItem("user_name");
-  React.useState(() => {
-    Axios.get("  http://localhost:8000/api/recommended").then((response) => {
-      setEbookList(response.data);
-    });
-  }, []);
+
+  // React.useState(() => {
+  //   Axios.get("  http://localhost:8000/api/recommended").then((response) => {
+  //     setEbookList(response.data);
+  //   });
+  // }, []);
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -89,10 +89,7 @@ export default function Recommended() {
     setViewer(false);
   }
 
-  const [searchInput, setSearchInput] = useState("");
-  const searchItems = (searchValue) => {
-    setSearchInput(searchValue);
-  };
+  const [searchInput] = useState("");
 
   const filtered = ebookList.filter((item) => {
     return (

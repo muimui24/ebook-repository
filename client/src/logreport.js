@@ -95,6 +95,7 @@ const Print = () => {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <h2>REPORT FOR USER LOGGED IN HISTORY:</h2>
       <Button
+        variant="outlined"
         onClick={() => {
           history.push("/logUpload");
         }}

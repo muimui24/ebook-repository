@@ -68,7 +68,7 @@ export default function MenuList(open) {
 
             localStorage.setItem("opener", false);
           }}
-          key="home"
+          key="books"
           sx={{
             minHeight: 48,
             justifyContent: open ? "initial" : "center",
@@ -195,7 +195,7 @@ export default function MenuList(open) {
             history.push("/ebooks");
             window.location.reload(false);
           }}
-          key="ebooks"
+          key="e-books"
           sx={{
             minHeight: 48,
             justifyContent: open ? "initial" : "center",
@@ -223,7 +223,7 @@ export default function MenuList(open) {
           history.push("/recommended");
           window.location.reload(false);
         }}
-        key="ebooks"
+        key="recommended"
         sx={{
           minHeight: 48,
           justifyContent: open ? "initial" : "center",
